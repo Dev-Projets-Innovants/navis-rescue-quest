@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { Waves, Clock, Users, Lock } from 'lucide-react';
+import { Clock, Users, Lock, Waves } from 'lucide-react';
+import missionNavisLogo from '@/assets/mission-navis-logo.jpg';
 const Landing = () => {
   const navigate = useNavigate();
   return <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-primary via-primary/90 to-primary/70">
@@ -11,10 +12,14 @@ const Landing = () => {
 
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-8">
         <div className="max-w-2xl w-full text-center space-y-8 animate-fade-in">
-          {/* Icon */}
+          {/* Logo */}
           <div className="flex justify-center">
             <div className="relative">
-              <Waves className="w-24 h-24 text-accent animate-pulse" />
+              <img 
+                src={missionNavisLogo} 
+                alt="Mission Navis - Bateau de Secours" 
+                className="w-48 h-48 object-contain animate-pulse"
+              />
               <div className="absolute inset-0 bg-accent/20 rounded-full blur-xl"></div>
             </div>
           </div>
