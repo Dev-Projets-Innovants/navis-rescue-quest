@@ -1,0 +1,87 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getCurrentSession, updateSession } from '@/lib/gameStorage';
+import { Timer } from '@/components/Timer';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Lock, Unlock, CheckCircle } from 'lucide-react';
+import { BoxType } from '@/types/game';
+
+const Dashboard = () => {
+  const [session, setSession] = useState(getCurrentSession());
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!session) {
+      navigate('/connect');
+    }
+  }, [session, navigate]);
+
+  if (!session) return null;
+
+  const handleStartBox = (boxType: BoxType) => {
+    navigate(`/quiz/${boxType}`);
+  };
+
+  return (
+    <div className="min-h-screen bg-background p-4">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div className="bg-primary text-primary-foreground rounded-lg p-4 flex justify-between items-center">
+          <Timer startTime={session.startTime} endTime={session.endTime} />
+          <div className="text-right">
+            <p className="text-sm opacity-90">Code équipe</p>
+            <p className="font-bold">{session.code}</p>
+          </div>
+        </div>
+
+        <div className="flex gap-2 flex-wrap">
+          {session.players.map(player => (
+            <div key={player.id} className="flex items-center gap-2 bg-muted rounded-full px-3 py-1">
+              <img src={player.avatar} alt={player.pseudo} className="w-6 h-6 rounded-full" />
+              <span className="text-sm">{player.pseudo}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold">📦 Boîtes à débloquer</h2>
+          {session.boxes.map(box => (
+            <Card key={box.type} className="p-4">
+              <div className="flex items-start gap-4">
+                <div className="text-4xl">{box.type === 'A' ? '🏥' : box.type === 'B' ? '🌍' : box.type === 'C' ? '🎨' : '🌱'}</div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg">{box.name}</h3>
+                  <p className="text-sm text-muted-foreground">{box.subtitle}</p>
+                  {box.status === 'unlocked' && (
+                    <div className="mt-2 bg-success/10 text-success rounded p-2 text-sm font-mono">
+                      Code: {box.unlockCode}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  {box.status === 'locked' && (
+                    <Button onClick={() => handleStartBox(box.type)}>
+                      <Lock className="w-4 h-4 mr-2" />
+                      Commencer
+                    </Button>
+                  )}
+                  {box.status === 'unlocked' && (
+                    <CheckCircle className="w-8 h-8 text-success" />
+                  )}
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+
+        <div className="text-center">
+          <p className="text-lg font-semibold">
+            🚢 Pièces collectées: {session.codesValidated.length}/4
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
