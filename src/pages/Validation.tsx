@@ -46,7 +46,7 @@ const Validation = () => {
         
         updateSession(updatedSession);
         setSession(updatedSession);
-        toast.success(`Code ${boxType} validé ! ✅`);
+        toast.success(`Code ${boxType} validé !`);
         
         if (updatedSession.codesValidated.length === 4) {
           setTimeout(() => navigate('/victory'), 1500);
@@ -65,7 +65,7 @@ const Validation = () => {
       <div className="max-w-2xl mx-auto space-y-6">
         <Card className="p-6 bg-background/95 backdrop-blur">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold">🔑 VALIDATION DES CODES</h1>
+            <h1 className="text-2xl font-bold">VALIDATION DES CODES</h1>
             <Timer startTime={session.startTime} />
           </div>
 
@@ -74,18 +74,14 @@ const Validation = () => {
               const box = session.boxes.find(b => b.type === boxType);
               const isValidated = session.codesValidated.includes(boxType);
               const isUnlocked = box?.status === 'unlocked';
-              const icon = boxType === 'A' ? '🏥' : boxType === 'B' ? '🌍' : boxType === 'C' ? '🎨' : '🌱';
 
               return (
                 <Card key={boxType} className={`p-4 ${isValidated ? 'bg-success/10 border-success' : ''}`}>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl">{icon}</span>
-                        <div>
-                          <p className="font-bold">Boîte {boxType}</p>
-                          <p className="text-xs text-muted-foreground">{box?.name}</p>
-                        </div>
+                      <div>
+                        <p className="font-bold">Boîte {boxType}</p>
+                        <p className="text-xs text-muted-foreground">{box?.name}</p>
                       </div>
                       {isValidated ? (
                         <CheckCircle className="h-6 w-6 text-success" />
@@ -116,13 +112,13 @@ const Validation = () => {
 
                     {!isValidated && !isUnlocked && (
                       <p className="text-sm text-muted-foreground">
-                        ⏳ Débloque d'abord cette boîte
+                        Débloque d'abord cette boîte
                       </p>
                     )}
 
                     {isValidated && (
                       <p className="text-sm text-success font-medium">
-                        ✅ Code validé : {box?.unlockCode}
+                        Code validé : {box?.unlockCode}
                       </p>
                     )}
                   </div>
@@ -133,13 +129,13 @@ const Validation = () => {
 
           <div className="space-y-4">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">📦 Codes validés</span>
+              <span className="text-muted-foreground">Codes validés</span>
               <span className="font-bold">{validatedCount}/4</span>
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">🚢 Assemblage du bateau</span>
+                <span className="text-muted-foreground">Assemblage du bateau</span>
                 <span className="font-bold">{Math.round(progress)}%</span>
               </div>
               <div className="h-3 bg-muted rounded-full overflow-hidden">
