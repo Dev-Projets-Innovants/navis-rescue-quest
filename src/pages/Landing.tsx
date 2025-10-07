@@ -27,7 +27,7 @@ const Landing = () => {
           {/* Title */}
           <div className="space-y-4">
             <h1 className="text-5xl md:text-6xl font-bold text-white">
-              🚢 MISSION NAVIS
+              MISSION NAVIS
             </h1>
             <p className="text-xl md:text-2xl text-white/90 font-medium">
               Bateau de Secours
