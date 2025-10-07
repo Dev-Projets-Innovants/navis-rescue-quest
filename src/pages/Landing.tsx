@@ -1,9 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { Waves, Clock, Users, Lock } from 'lucide-react';
+
 const Landing = () => {
   const navigate = useNavigate();
-  return <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-primary via-primary/90 to-primary/70">
+
+  return (
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-primary via-primary/90 to-primary/70">
       {/* Animated background */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_hsl(var(--accent))_0%,_transparent_50%)] animate-pulse"></div>
@@ -63,11 +66,17 @@ const Landing = () => {
           </div>
 
           {/* CTA */}
-          <Button onClick={() => navigate('/connect')} size="lg" className="w-full md:w-auto text-lg px-12 py-6 bg-secondary hover:bg-secondary/90 shadow-xl hover:shadow-2xl transition-all hover:scale-105 text-slate-900">
+          <Button
+            onClick={() => navigate('/connect')}
+            size="lg"
+            className="w-full md:w-auto text-lg px-12 py-6 bg-secondary hover:bg-secondary/90 text-white shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+          >
             ACCEPTER LA MISSION →
           </Button>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default Landing;
