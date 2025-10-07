@@ -86,64 +86,90 @@ const Quiz = () => {
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary via-primary/90 to-accent p-4">
-      <div className="max-w-2xl mx-auto space-y-6">
-        <Card className="p-6 bg-background/95 backdrop-blur">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2">
-              <span className="text-3xl">{box.type === 'A' ? '🏥' : box.type === 'B' ? '🌍' : box.type === 'C' ? '🎨' : '🌱'}</span>
+    <div className="min-h-screen bg-gradient-to-br from-primary via-primary/90 to-accent p-4 animate-fade-in">
+      <div className="max-w-2xl mx-auto space-y-4">
+        {/* Header Card */}
+        <Card className="p-4 bg-card/95 backdrop-blur-sm border-primary/20 shadow-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-accent/20 to-accent/10 flex items-center justify-center text-2xl border border-accent/30">
+                {box.type === 'A' ? '🏥' : box.type === 'B' ? '🌍' : box.type === 'C' ? '🎨' : '🌱'}
+              </div>
               <div>
-                <h2 className="text-xl font-bold">{box.name}</h2>
-                <p className="text-sm text-muted-foreground">{box.subtitle}</p>
+                <h2 className="text-lg font-bold text-foreground">{box.name}</h2>
+                <p className="text-xs text-muted-foreground">{box.subtitle}</p>
               </div>
             </div>
             <Timer startTime={session.startTime} />
           </div>
+        </Card>
 
-          <div className="flex items-center justify-between mb-6">
-            <span className="text-sm text-muted-foreground">
-              Question {currentQuestionIndex + 1}/{questions.length}
-            </span>
-            <span className="text-sm text-muted-foreground">
+        {/* Question Card */}
+        <Card className="p-6 bg-card/95 backdrop-blur-sm border-primary/20 shadow-xl">
+          <div className="flex items-center justify-between mb-4 pb-4 border-b border-border/50">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary">
+                {currentQuestionIndex + 1}
+              </div>
+              <span className="text-sm font-medium text-muted-foreground">
+                Question {currentQuestionIndex + 1}/{questions.length}
+              </span>
+            </div>
+            <span className="text-xs text-muted-foreground bg-muted/50 px-3 py-1 rounded-full">
               👥 {session.players.length} joueur{session.players.length > 1 ? 's' : ''}
             </span>
           </div>
 
           <div className="space-y-6">
-            <h3 className="text-lg font-medium">{currentQuestion.question}</h3>
+            <h3 className="text-lg font-semibold text-foreground leading-relaxed">
+              {currentQuestion.question}
+            </h3>
 
             <div className="space-y-3">
               {currentQuestion.options.map((option, index) => (
                 <button
                   key={index}
                   onClick={() => handleAnswerSelect(index)}
-                  className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
+                  className={`w-full p-4 text-left rounded-xl border-2 transition-all duration-300 font-medium ${
                     selectedAnswer === index
-                      ? 'border-accent bg-accent/10'
-                      : 'border-border hover:border-accent/50'
+                      ? 'border-accent bg-accent/20 shadow-lg shadow-accent/20 scale-[1.02]'
+                      : 'border-border bg-card hover:border-accent/50 hover:bg-accent/5 hover:scale-[1.01]'
                   }`}
                 >
-                  {option}
+                  <div className="flex items-center gap-3">
+                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                      selectedAnswer === index
+                        ? 'border-accent bg-accent text-accent-foreground'
+                        : 'border-muted-foreground/30'
+                    }`}>
+                      {selectedAnswer === index && (
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </div>
+                    <span>{option}</span>
+                  </div>
                 </button>
               ))}
             </div>
 
             <Button 
               onClick={handleValidate} 
-              className="w-full"
+              className="w-full h-12 text-base font-bold shadow-lg hover:shadow-xl transition-all duration-300"
               disabled={selectedAnswer === null}
             >
-              VALIDER LA RÉPONSE
+              {selectedAnswer === null ? 'SÉLECTIONNE UNE RÉPONSE' : 'VALIDER LA RÉPONSE ✓'}
             </Button>
 
-            <div className="space-y-2">
+            <div className="space-y-2 pt-4 border-t border-border/50">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Progression de la boîte</span>
-                <span className="font-bold">{Math.round(progress)}%</span>
+                <span className="text-muted-foreground font-medium">Progression de la boîte</span>
+                <span className="font-bold text-primary">{Math.round(progress)}%</span>
               </div>
-              <div className="h-2 bg-muted rounded-full overflow-hidden">
+              <div className="h-3 bg-muted rounded-full overflow-hidden shadow-inner">
                 <div 
-                  className="h-full bg-accent transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-accent to-accent/80 transition-all duration-500 ease-out shadow-lg"
                   style={{ width: `${progress}%` }}
                 />
               </div>
