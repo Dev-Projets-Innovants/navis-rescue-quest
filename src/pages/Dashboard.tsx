@@ -6,6 +6,17 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Lock, Unlock, CheckCircle } from 'lucide-react';
 import { BoxType } from '@/types/game';
+import boxHealthImg from '@/assets/box-health.jpg';
+import boxTourismImg from '@/assets/box-tourism.jpg';
+import boxArtsImg from '@/assets/box-arts.jpg';
+import boxEnvironmentImg from '@/assets/box-environment.jpg';
+
+const boxImages: Record<BoxType, string> = {
+  A: boxHealthImg,
+  B: boxTourismImg,
+  C: boxArtsImg,
+  D: boxEnvironmentImg
+};
 
 const Dashboard = () => {
   const [session, setSession] = useState(getCurrentSession());
@@ -48,7 +59,11 @@ const Dashboard = () => {
           {session.boxes.map(box => (
             <Card key={box.type} className="p-4">
               <div className="flex items-start gap-4">
-                <div className="text-4xl">{box.type === 'A' ? '🏥' : box.type === 'B' ? '🌍' : box.type === 'C' ? '🎨' : '🌱'}</div>
+                <img 
+                  src={boxImages[box.type]} 
+                  alt={box.name}
+                  className="w-16 h-16 rounded-lg object-cover shadow-md"
+                />
                 <div className="flex-1">
                   <h3 className="font-bold text-lg">{box.name}</h3>
                   <p className="text-sm text-muted-foreground">{box.subtitle}</p>
