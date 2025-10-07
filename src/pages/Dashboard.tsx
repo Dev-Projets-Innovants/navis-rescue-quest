@@ -55,7 +55,7 @@ const Dashboard = () => {
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-xl font-bold">📦 Boîtes à débloquer</h2>
+          <h2 className="text-xl font-bold">Boîtes à débloquer</h2>
           {session.boxes.map(box => (
             <Card key={box.type} className="p-4">
               <div className="flex items-start gap-4">
