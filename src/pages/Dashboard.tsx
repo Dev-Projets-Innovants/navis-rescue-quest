@@ -91,7 +91,7 @@ const Dashboard = () => {
 
         <div className="text-center">
           <p className="text-lg font-semibold">
-            🚢 Pièces collectées: {session.codesValidated.length}/4
+            Pièces collectées: {session.codesValidated.length}/4
           </p>
         </div>
       </div>
