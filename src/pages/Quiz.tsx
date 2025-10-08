@@ -12,6 +12,13 @@ import { shuffleArray } from '@/lib/utils';
 import { BoxType } from '@/types/game';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const QUIZ_DURATION = 600; // 10 minutes in seconds
 const PASS_THRESHOLD = 0.6; // 60% minimum to pass
@@ -35,6 +42,8 @@ const Quiz = () => {
   const [showFailure, setShowFailure] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
   const [progressLoaded, setProgressLoaded] = useState(false);
+  const [showEducationalPopup, setShowEducationalPopup] = useState(false);
+  const [dbQuestionData, setDbQuestionData] = useState<Record<string, { explanation: string; image_url: string }>>({});
 
   // Get box data before any early returns
   const box = session?.boxes.find(b => b.type === boxType);
@@ -46,6 +55,37 @@ const Quiz = () => {
     const questions = box.questions.slice(0, questionsCount);
     return shuffleArray(questions);
   }, [box?.questions, questionsCount]);
+
+  // Load question data from database
+  useEffect(() => {
+    const loadQuestionData = async () => {
+      if (!shuffledQuestions.length) return;
+      
+      const questionIds = shuffledQuestions.map(q => q.id);
+      const { data, error } = await supabase
+        .from('questions')
+        .select('id, explanation, image_url')
+        .in('id', questionIds);
+      
+      if (error) {
+        console.error('Error loading question data:', error);
+        return;
+      }
+      
+      if (data) {
+        const dataMap: Record<string, { explanation: string; image_url: string }> = {};
+        data.forEach(item => {
+          dataMap[item.id] = {
+            explanation: item.explanation || '',
+            image_url: item.image_url || ''
+          };
+        });
+        setDbQuestionData(dataMap);
+      }
+    };
+    
+    loadQuestionData();
+  }, [shuffledQuestions]);
 
   useEffect(() => {
     if (loading) return;
@@ -175,12 +215,11 @@ const Quiz = () => {
 
     if (isCorrect) {
       toast.success('Bonne réponse ! ✅');
+      setShowExplanation(true);
     } else {
-      toast.error('Mauvaise réponse ❌');
+      // Ouvrir la popup éducative uniquement en cas de mauvaise réponse
+      setShowEducationalPopup(true);
     }
-
-    // Show explanation
-    setShowExplanation(true);
   };
 
   const handleNextQuestion = async () => {
@@ -266,10 +305,68 @@ const Quiz = () => {
     );
   }
 
+  const currentQuestionData = dbQuestionData[currentQuestion?.id] || { explanation: '', image_url: '' };
+  const correctOption = currentQuestion?.options[currentQuestion.correctAnswer];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary via-primary/90 to-accent p-4">
-      <div className="max-w-2xl mx-auto space-y-6">
-        <Card className="p-6 bg-background/95 backdrop-blur">
+    <>
+      {/* Popup éducative pour mauvaise réponse */}
+      <Dialog open={showEducationalPopup} onOpenChange={setShowEducationalPopup}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl flex items-center gap-2">
+              <span className="text-3xl">❌</span>
+              Oups ! Ce n'est pas la bonne réponse...
+            </DialogTitle>
+            <DialogDescription className="text-base">
+              Pas de souci ! C'est en se trompant qu'on apprend. Voici la bonne réponse et son explication.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 mt-4">
+            {/* Image représentative */}
+            {currentQuestionData.image_url && (
+              <div className="w-full rounded-lg overflow-hidden">
+                <img 
+                  src={currentQuestionData.image_url} 
+                  alt="Illustration de la réponse"
+                  className="w-full h-64 object-cover"
+                />
+              </div>
+            )}
+            
+            {/* Bonne réponse */}
+            <div className="bg-green-50 dark:bg-green-950/30 border-l-4 border-green-500 p-4 rounded">
+              <p className="font-semibold text-green-800 dark:text-green-200 mb-1">✅ La bonne réponse était :</p>
+              <p className="text-green-900 dark:text-green-100 text-lg">{correctOption}</p>
+            </div>
+            
+            {/* Explication */}
+            {currentQuestionData.explanation && (
+              <div className="bg-blue-50 dark:bg-blue-950/30 border-l-4 border-blue-500 p-4 rounded">
+                <p className="font-semibold text-blue-800 dark:text-blue-200 mb-2">💡 Explication :</p>
+                <p className="text-blue-900 dark:text-blue-100 leading-relaxed">{currentQuestionData.explanation}</p>
+              </div>
+            )}
+            
+            {/* Bouton de fermeture */}
+            <Button 
+              onClick={() => {
+                setShowEducationalPopup(false);
+                setShowExplanation(true);
+              }}
+              className="w-full mt-4"
+              size="lg"
+            >
+              J'ai compris ✓
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <div className="min-h-screen bg-gradient-to-br from-primary via-primary/90 to-accent p-4">
+        <div className="max-w-2xl mx-auto space-y-6">
+          <Card className="p-6 bg-background/95 backdrop-blur">
           <div className="flex items-center justify-between mb-4">
             <Button 
               variant="ghost" 
@@ -421,6 +518,7 @@ const Quiz = () => {
         </Card>
       </div>
     </div>
+    </>
   );
 };
 
