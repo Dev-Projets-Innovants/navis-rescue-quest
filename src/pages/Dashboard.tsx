@@ -90,8 +90,9 @@ const Dashboard = () => {
                     </Button>
                   )}
                   {box.status === 'in-progress' && (
-                    <Button disabled variant="outline">
-                      En cours...
+                    <Button onClick={() => handleStartBox(box.type)} className="gap-2">
+                      <Lock className="w-4 h-4" />
+                      Continuer
                     </Button>
                   )}
                   {box.status === 'unlocked' && (

@@ -23,7 +23,7 @@ const Quiz = () => {
   const { session, loading } = useGameSession();
   const { saveAnswer } = usePlayerAnswers();
   const { unlockBox } = useBoxUnlock();
-  const { startAttempt, endAttempt } = useBoxAttempts();
+  const { startAttempt, endAttempt, getActiveAttempt } = useBoxAttempts();
   
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -60,12 +60,20 @@ const Quiz = () => {
       return;
     }
 
-    // Start the attempt and assign box to player
+    // Check if there's an active attempt or start a new one
     const playerId = localStorage.getItem('current_player_id');
     if (playerId && !attemptId) {
-      startAttempt(session.code, boxType, playerId).then(data => {
-        if (data) {
-          setAttemptId(data.id);
+      getActiveAttempt(session.code, boxType).then(activeAttempt => {
+        if (activeAttempt && activeAttempt.player_id === playerId) {
+          // Reuse existing attempt
+          setAttemptId(activeAttempt.id);
+        } else if (!activeAttempt) {
+          // Start new attempt
+          startAttempt(session.code, boxType, playerId).then(data => {
+            if (data) {
+              setAttemptId(data.id);
+            }
+          });
         }
       });
 
