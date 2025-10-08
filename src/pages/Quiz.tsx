@@ -19,6 +19,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { 
+  XCircle, 
+  Clock, 
+  CheckCircle, 
+  Check, 
+  X,
+  Heart,
+  Globe,
+  Palette,
+  Leaf,
+  AlertCircle,
+  Lightbulb
+} from 'lucide-react';
 
 const QUIZ_DURATION = 600; // 10 minutes in seconds
 const PASS_THRESHOLD = 0.6; // 60% minimum to pass
@@ -173,7 +186,7 @@ const Quiz = () => {
 
   const handleTimeUp = async () => {
     setTimeUp(true);
-    toast.error('⏰ Temps écoulé ! La boîte reste verrouillée.');
+    toast.error('Temps écoulé ! La boîte reste verrouillée.');
     
     // Calculate final score
     const score = (answers.filter(a => a).length / shuffledQuestions.length) * 100;
@@ -214,7 +227,7 @@ const Quiz = () => {
     }
 
     if (isCorrect) {
-      toast.success('Bonne réponse ! ✅');
+      toast.success('Bonne réponse !');
       setShowExplanation(true);
     } else {
       // Ouvrir la popup éducative uniquement en cas de mauvaise réponse
@@ -245,7 +258,7 @@ const Quiz = () => {
       if (success) {
         // Unlock the box
         await unlockBox(session.code, boxType);
-        toast.success('🎉 Boîte débloquée !');
+        toast.success('Boîte débloquée !');
         navigate(`/unlock?box=${boxType}`);
       } else {
         setFinalScore(score);
@@ -264,9 +277,9 @@ const Quiz = () => {
   if (showFailure) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-destructive/20 via-background to-destructive/10 p-4 flex items-center justify-center">
-        <Card className="p-8 max-w-md text-center space-y-6">
-          <div className="text-6xl">❌</div>
-          <h2 className="text-2xl font-bold">Échec</h2>
+        <Card className="p-6 sm:p-8 max-w-md w-full text-center space-y-4 sm:space-y-6">
+          <XCircle className="w-16 h-16 sm:w-20 sm:h-20 text-destructive mx-auto" />
+          <h2 className="text-xl sm:text-2xl font-bold">Échec</h2>
           <p className="text-muted-foreground">
             Vous n'avez pas atteint le score minimum pour débloquer cette boîte.
           </p>
@@ -289,8 +302,9 @@ const Quiz = () => {
   if (timeUp) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-destructive/20 via-background to-destructive/10 p-4 flex items-center justify-center">
-        <Card className="p-8 max-w-md text-center">
-          <h2 className="text-2xl font-bold mb-4">⏰ Temps écoulé !</h2>
+        <Card className="p-6 sm:p-8 max-w-md w-full text-center">
+          <Clock className="w-16 h-16 sm:w-20 sm:h-20 text-destructive mx-auto mb-4" />
+          <h2 className="text-xl sm:text-2xl font-bold mb-4">Temps écoulé !</h2>
           <p className="text-muted-foreground mb-4">
             Le temps imparti pour cette boîte est écoulé.
           </p>
@@ -307,6 +321,18 @@ const Quiz = () => {
 
   const currentQuestionData = dbQuestionData[currentQuestion?.id] || { explanation: '', image_url: '' };
   const correctOption = currentQuestion?.options[currentQuestion.correctAnswer];
+  
+  const getBoxIcon = (type: BoxType) => {
+    switch(type) {
+      case 'A': return Heart;
+      case 'B': return Globe;
+      case 'C': return Palette;
+      case 'D': return Leaf;
+      default: return Heart;
+    }
+  };
+  
+  const BoxIcon = getBoxIcon(box.type);
 
   return (
     <>
@@ -314,8 +340,8 @@ const Quiz = () => {
       <Dialog open={showEducationalPopup} onOpenChange={setShowEducationalPopup}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl flex items-center gap-2">
-              <span className="text-3xl">❌</span>
+            <DialogTitle className="text-lg sm:text-2xl flex items-center gap-2">
+              <AlertCircle className="w-6 h-6 sm:w-8 sm:h-8 text-destructive flex-shrink-0" />
               Oups ! Ce n'est pas la bonne réponse...
             </DialogTitle>
             <DialogDescription className="text-base">
@@ -336,16 +362,22 @@ const Quiz = () => {
             )}
             
             {/* Bonne réponse */}
-            <div className="bg-green-50 dark:bg-green-950/30 border-l-4 border-green-500 p-4 rounded">
-              <p className="font-semibold text-green-800 dark:text-green-200 mb-1">✅ La bonne réponse était :</p>
-              <p className="text-green-900 dark:text-green-100 text-lg">{correctOption}</p>
+            <div className="bg-green-50 dark:bg-green-950/30 border-l-4 border-green-500 p-3 sm:p-4 rounded">
+              <div className="flex items-center gap-2 mb-1">
+                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 dark:text-green-400 flex-shrink-0" />
+                <p className="font-semibold text-green-800 dark:text-green-200 text-sm sm:text-base">La bonne réponse était :</p>
+              </div>
+              <p className="text-green-900 dark:text-green-100 text-base sm:text-lg ml-6 sm:ml-7">{correctOption}</p>
             </div>
             
             {/* Explication */}
             {currentQuestionData.explanation && (
-              <div className="bg-blue-50 dark:bg-blue-950/30 border-l-4 border-blue-500 p-4 rounded">
-                <p className="font-semibold text-blue-800 dark:text-blue-200 mb-2">💡 Explication :</p>
-                <p className="text-blue-900 dark:text-blue-100 leading-relaxed">{currentQuestionData.explanation}</p>
+              <div className="bg-blue-50 dark:bg-blue-950/30 border-l-4 border-blue-500 p-3 sm:p-4 rounded">
+                <div className="flex items-center gap-2 mb-2">
+                  <Lightbulb className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                  <p className="font-semibold text-blue-800 dark:text-blue-200 text-sm sm:text-base">Explication :</p>
+                </div>
+                <p className="text-blue-900 dark:text-blue-100 leading-relaxed text-sm sm:text-base">{currentQuestionData.explanation}</p>
               </div>
             )}
             
@@ -383,11 +415,13 @@ const Quiz = () => {
             />
           </div>
 
-          <div className="flex items-center gap-2 mb-6">
-            <span className="text-3xl">{box.type === 'A' ? '🏥' : box.type === 'B' ? '🌍' : box.type === 'C' ? '🎨' : '🌱'}</span>
-            <div>
-              <h2 className="text-xl font-bold">{box.name}</h2>
-              <p className="text-sm text-muted-foreground">{box.subtitle}</p>
+          <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+            <div className="bg-primary/10 rounded-lg p-2">
+              <BoxIcon className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <h2 className="text-lg sm:text-xl font-bold truncate">{box.name}</h2>
+              <p className="text-xs sm:text-sm text-muted-foreground truncate">{box.subtitle}</p>
             </div>
           </div>
 
@@ -401,26 +435,26 @@ const Quiz = () => {
           </div>
 
           {!showExplanation ? (
-            <div className="space-y-6">
-              <h3 className="text-lg font-medium">{currentQuestion.question}</h3>
+            <div className="space-y-4 sm:space-y-6">
+              <h3 className="text-base sm:text-lg font-medium">{currentQuestion.question}</h3>
 
               <div className="space-y-3">
                 {currentQuestion.options.map((option, index) => (
                   <button
                     key={index}
                     onClick={() => handleAnswerSelect(index)}
-                    className={`w-full p-4 text-left rounded-lg border-2 transition-all duration-300 relative ${
+                    className={`w-full p-3 sm:p-4 text-left rounded-lg border-2 transition-all duration-300 relative text-sm sm:text-base ${
                       selectedAnswer === index
                         ? 'border-primary border-[3px] bg-primary/20 shadow-lg shadow-primary/30 scale-[1.02]'
                         : 'border-border hover:border-primary/50 hover:bg-muted/50'
                     }`}
                   >
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                       <span className={selectedAnswer === index ? 'font-semibold' : ''}>
                         {option}
                       </span>
                       {selectedAnswer === index && (
-                        <span className="text-primary text-2xl">✓</span>
+                        <Check className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
                       )}
                     </div>
                   </button>
@@ -449,8 +483,8 @@ const Quiz = () => {
               </div>
             </div>
           ) : (
-            <div className="space-y-6">
-              <h3 className="text-lg font-medium">{currentQuestion.question}</h3>
+            <div className="space-y-4 sm:space-y-6">
+              <h3 className="text-base sm:text-lg font-medium">{currentQuestion.question}</h3>
 
               <div className="space-y-3">
                 {currentQuestion.options.map((option, index) => {
@@ -460,18 +494,18 @@ const Quiz = () => {
                   return (
                     <div
                       key={index}
-                      className={`w-full p-4 rounded-lg border-2 transition-all ${
+                      className={`w-full p-3 sm:p-4 rounded-lg border-2 transition-all text-sm sm:text-base ${
                         isCorrect
-                          ? 'border-green-500 bg-green-50'
+                          ? 'border-green-500 bg-green-50 dark:bg-green-950/30'
                           : isSelected
-                          ? 'border-red-500 bg-red-50'
+                          ? 'border-red-500 bg-red-50 dark:bg-red-950/30'
                           : 'border-border'
                       }`}
                     >
-                      <div className="flex items-center justify-between">
-                        <span>{option}</span>
-                        {isCorrect && <span className="text-green-600">✓</span>}
-                        {isSelected && !isCorrect && <span className="text-red-600">✗</span>}
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="flex-1">{option}</span>
+                        {isCorrect && <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />}
+                        {isSelected && !isCorrect && <XCircle className="w-5 h-5 text-red-600 flex-shrink-0" />}
                       </div>
                     </div>
                   );
@@ -479,9 +513,12 @@ const Quiz = () => {
               </div>
 
               {currentQuestion.explanation && (
-                <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-                  <p className="font-semibold mb-2">Explication</p>
-                  <p className="text-sm">{currentQuestion.explanation}</p>
+                <div className="bg-blue-50 dark:bg-blue-950/30 border-l-4 border-blue-500 p-3 sm:p-4 rounded">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Lightbulb className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
+                    <p className="font-semibold text-sm sm:text-base">Explication</p>
+                  </div>
+                  <p className="text-xs sm:text-sm">{currentQuestion.explanation}</p>
                   {currentQuestion.image && (
                     <img 
                       src={currentQuestion.image} 
