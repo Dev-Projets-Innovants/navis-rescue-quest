@@ -32,6 +32,8 @@ const Quiz = () => {
   const [quizStartTime] = useState(Date.now());
   const [attemptId, setAttemptId] = useState<string | null>(null);
   const [timeUp, setTimeUp] = useState(false);
+  const [showFailure, setShowFailure] = useState(false);
+  const [finalScore, setFinalScore] = useState(0);
 
   // Get box data before any early returns
   const box = session?.boxes.find(b => b.type === boxType);
@@ -158,16 +160,43 @@ const Quiz = () => {
         toast.success('🎉 Boîte débloquée !');
         navigate(`/unlock?box=${boxType}`);
       } else {
-        toast.error(`Score insuffisant (${Math.round(score)}%). Minimum requis: ${PASS_THRESHOLD * 100}%`);
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 3000);
+        setFinalScore(score);
+        setShowFailure(true);
       }
     }
   };
 
   const progress = ((currentQuestionIndex + 1) / shuffledQuestions.length) * 100;
   const score = answers.length > 0 ? (answers.filter(a => a).length / answers.length) * 100 : 0;
+
+  const handleBackToDashboard = () => {
+    navigate('/dashboard');
+  };
+
+  if (showFailure) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-destructive/20 via-background to-destructive/10 p-4 flex items-center justify-center">
+        <Card className="p-8 max-w-md text-center space-y-6">
+          <div className="text-6xl">❌</div>
+          <h2 className="text-2xl font-bold">Échec</h2>
+          <p className="text-muted-foreground">
+            Vous n'avez pas atteint le score minimum pour débloquer cette boîte.
+          </p>
+          <div className="space-y-2">
+            <p className="text-lg font-semibold">
+              Score obtenu: {Math.round(finalScore)}%
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Minimum requis: {PASS_THRESHOLD * 100}%
+            </p>
+          </div>
+          <Button onClick={handleBackToDashboard} className="w-full">
+            Retour au tableau de bord
+          </Button>
+        </Card>
+      </div>
+    );
+  }
 
   if (timeUp) {
     return (
@@ -180,6 +209,9 @@ const Quiz = () => {
           <p className="text-sm">
             Score final: {Math.round(score)}%
           </p>
+          <Button onClick={handleBackToDashboard} className="w-full mt-4">
+            Retour au tableau de bord
+          </Button>
         </Card>
       </div>
     );
@@ -189,19 +221,28 @@ const Quiz = () => {
     <div className="min-h-screen bg-gradient-to-br from-primary via-primary/90 to-accent p-4">
       <div className="max-w-2xl mx-auto space-y-6">
         <Card className="p-6 bg-background/95 backdrop-blur">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2">
-              <span className="text-3xl">{box.type === 'A' ? '🏥' : box.type === 'B' ? '🌍' : box.type === 'C' ? '🎨' : '🌱'}</span>
-              <div>
-                <h2 className="text-xl font-bold">{box.name}</h2>
-                <p className="text-sm text-muted-foreground">{box.subtitle}</p>
-              </div>
-            </div>
+          <div className="flex items-center justify-between mb-4">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleBackToDashboard}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              ← Retour
+            </Button>
             <Timer 
               startTime={quizStartTime} 
               duration={QUIZ_DURATION}
               onTimeUp={handleTimeUp}
             />
+          </div>
+
+          <div className="flex items-center gap-2 mb-6">
+            <span className="text-3xl">{box.type === 'A' ? '🏥' : box.type === 'B' ? '🌍' : box.type === 'C' ? '🎨' : '🌱'}</span>
+            <div>
+              <h2 className="text-xl font-bold">{box.name}</h2>
+              <p className="text-sm text-muted-foreground">{box.subtitle}</p>
+            </div>
           </div>
 
           <div className="flex items-center justify-between mb-6">
