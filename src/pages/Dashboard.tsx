@@ -40,7 +40,7 @@ const Dashboard = () => {
   if (loading || !session) return null;
 
   const handleStartBox = (boxType: BoxType) => {
-    navigate(`/quiz/${boxType}`);
+    navigate(`/quiz?box=${boxType}`);
   };
 
   return (
