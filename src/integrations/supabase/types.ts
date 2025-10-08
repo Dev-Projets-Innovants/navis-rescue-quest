@@ -16,30 +16,39 @@ export type Database = {
     Tables: {
       box_attempts: {
         Row: {
+          answers: Json | null
           box_type: Database["public"]["Enums"]["box_type"]
+          current_question_index: number | null
           ended_at: string | null
           id: string
           player_id: string
+          quiz_start_time: string | null
           score: number | null
           session_id: string
           started_at: string
           success: boolean | null
         }
         Insert: {
+          answers?: Json | null
           box_type: Database["public"]["Enums"]["box_type"]
+          current_question_index?: number | null
           ended_at?: string | null
           id?: string
           player_id: string
+          quiz_start_time?: string | null
           score?: number | null
           session_id: string
           started_at?: string
           success?: boolean | null
         }
         Update: {
+          answers?: Json | null
           box_type?: Database["public"]["Enums"]["box_type"]
+          current_question_index?: number | null
           ended_at?: string | null
           id?: string
           player_id?: string
+          quiz_start_time?: string | null
           score?: number | null
           session_id?: string
           started_at?: string

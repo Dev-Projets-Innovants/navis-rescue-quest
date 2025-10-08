@@ -23,17 +23,18 @@ const Quiz = () => {
   const { session, loading } = useGameSession();
   const { saveAnswer } = usePlayerAnswers();
   const { unlockBox } = useBoxUnlock();
-  const { startAttempt, endAttempt, getActiveAttempt } = useBoxAttempts();
+  const { startAttempt, endAttempt, getActiveAttempt, saveProgress } = useBoxAttempts();
   
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answers, setAnswers] = useState<boolean[]>([]);
   const [showExplanation, setShowExplanation] = useState(false);
-  const [quizStartTime] = useState(Date.now());
+  const [quizStartTime, setQuizStartTime] = useState(Date.now());
   const [attemptId, setAttemptId] = useState<string | null>(null);
   const [timeUp, setTimeUp] = useState(false);
   const [showFailure, setShowFailure] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
+  const [progressLoaded, setProgressLoaded] = useState(false);
 
   // Get box data before any early returns
   const box = session?.boxes.find(b => b.type === boxType);
@@ -62,16 +63,37 @@ const Quiz = () => {
 
     // Check if there's an active attempt or start a new one
     const playerId = localStorage.getItem('current_player_id');
-    if (playerId && !attemptId) {
+    if (playerId && !attemptId && !progressLoaded) {
       getActiveAttempt(session.code, boxType).then(activeAttempt => {
         if (activeAttempt && activeAttempt.player_id === playerId) {
-          // Reuse existing attempt
+          // Restore existing attempt
           setAttemptId(activeAttempt.id);
+          
+          // Restore progress
+          if (activeAttempt.current_question_index !== null) {
+            setCurrentQuestionIndex(activeAttempt.current_question_index);
+          }
+          
+          if (activeAttempt.answers) {
+            const savedAnswers = typeof activeAttempt.answers === 'string' 
+              ? JSON.parse(activeAttempt.answers)
+              : activeAttempt.answers;
+            setAnswers(savedAnswers);
+          }
+          
+          // Restore quiz start time
+          if (activeAttempt.quiz_start_time) {
+            setQuizStartTime(new Date(activeAttempt.quiz_start_time).getTime());
+          }
+          
+          setProgressLoaded(true);
         } else if (!activeAttempt) {
           // Start new attempt
           startAttempt(session.code, boxType, playerId).then(data => {
             if (data) {
               setAttemptId(data.id);
+              setQuizStartTime(new Date(data.quiz_start_time).getTime());
+              setProgressLoaded(true);
             }
           });
         }
@@ -95,7 +117,7 @@ const Quiz = () => {
           .then();
       }
     };
-  }, [loading, session, boxType, navigate, attemptId, startAttempt]);
+  }, [loading, session, boxType, navigate, attemptId, startAttempt, getActiveAttempt, progressLoaded]);
 
   if (!session || !boxType || !box || shuffledQuestions.length === 0) return null;
 
@@ -138,6 +160,11 @@ const Quiz = () => {
       await saveAnswer(playerId, currentQuestion.id, isCorrect);
     }
 
+    // Save progress
+    if (attemptId) {
+      await saveProgress(attemptId, currentQuestionIndex, newAnswers);
+    }
+
     if (isCorrect) {
       toast.success('Bonne réponse ! ✅');
     } else {
@@ -150,9 +177,15 @@ const Quiz = () => {
 
   const handleNextQuestion = async () => {
     if (currentQuestionIndex < shuffledQuestions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      const nextIndex = currentQuestionIndex + 1;
+      setCurrentQuestionIndex(nextIndex);
       setSelectedAnswer(null);
       setShowExplanation(false);
+      
+      // Save progress
+      if (attemptId) {
+        await saveProgress(attemptId, nextIndex, answers);
+      }
     } else {
       // Calculate final score
       const score = (answers.filter(a => a).length / shuffledQuestions.length) * 100;

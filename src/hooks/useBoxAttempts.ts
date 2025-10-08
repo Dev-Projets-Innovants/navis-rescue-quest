@@ -17,7 +17,8 @@ export const useBoxAttempts = () => {
         .insert({
           session_id: sessionData.id,
           box_type: boxType,
-          player_id: playerId
+          player_id: playerId,
+          quiz_start_time: new Date().toISOString()
         })
         .select()
         .single();
@@ -27,6 +28,28 @@ export const useBoxAttempts = () => {
     } catch (error) {
       console.error('Error starting attempt:', error);
       return null;
+    }
+  };
+
+  const saveProgress = async (
+    attemptId: string, 
+    currentQuestionIndex: number, 
+    answers: boolean[]
+  ) => {
+    try {
+      const { error } = await supabase
+        .from('box_attempts')
+        .update({
+          current_question_index: currentQuestionIndex,
+          answers: JSON.stringify(answers)
+        })
+        .eq('id', attemptId);
+
+      if (error) throw error;
+      return true;
+    } catch (error) {
+      console.error('Error saving progress:', error);
+      return false;
     }
   };
 
@@ -73,5 +96,5 @@ export const useBoxAttempts = () => {
     }
   };
 
-  return { startAttempt, endAttempt, getActiveAttempt };
+  return { startAttempt, endAttempt, getActiveAttempt, saveProgress };
 };
