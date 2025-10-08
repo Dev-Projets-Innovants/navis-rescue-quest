@@ -6,6 +6,7 @@ import { useGameSession } from '@/hooks/useGameSession';
 import { BoxType } from '@/types/game';
 import { Copy, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import missionNavisLogo from '@/assets/mission-navis-logo.jpg';
 
 const Unlock = () => {
   const [searchParams] = useSearchParams();
@@ -44,21 +45,27 @@ const Unlock = () => {
     }
   };
 
-  const icon = box.type === 'A' ? '🏥' : box.type === 'B' ? '🌍' : box.type === 'C' ? '🎨' : '🌱';
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-success via-success/90 to-accent p-4 flex items-center justify-center">
       <div className="max-w-2xl w-full space-y-6 animate-scale-in">
         <Card className="p-8 bg-background/95 backdrop-blur text-center space-y-6">
           <div className="space-y-4">
-            <div className="text-6xl animate-bounce">{icon}</div>
+            <img 
+              src={missionNavisLogo} 
+              alt="Mission Navis" 
+              className="w-32 h-32 mx-auto animate-bounce object-contain"
+            />
             <h1 className="text-3xl font-bold text-success">🎉 BOÎTE DÉBLOQUÉE !</h1>
             <p className="text-xl font-medium">{box.name}</p>
           </div>
 
           <div className="py-8">
             <div className="inline-block animate-pulse">
-              <div className="text-8xl">🚢</div>
+              <img 
+                src={missionNavisLogo} 
+                alt="Mission Navis" 
+                className="w-32 h-32 mx-auto object-contain"
+              />
               <p className="text-sm text-muted-foreground mt-2">Pièce du bateau récupérée</p>
             </div>
           </div>
