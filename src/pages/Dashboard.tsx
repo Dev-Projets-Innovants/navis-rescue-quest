@@ -44,21 +44,25 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <div className="bg-primary text-primary-foreground rounded-lg p-4 flex justify-between items-center">
+    <div className="min-h-screen bg-background pb-6">
+      {/* Sticky header avec timer */}
+      <div className="sticky top-0 z-10 bg-primary text-primary-foreground shadow-lg">
+        <div className="max-w-4xl mx-auto p-4 flex justify-between items-center">
           <Timer startTime={session.startTime} endTime={session.endTime} />
           <div className="text-right">
-            <p className="text-sm opacity-90">Code équipe</p>
-            <p className="font-bold">{session.code}</p>
+            <p className="text-xs sm:text-sm opacity-90">Code équipe</p>
+            <p className="font-bold text-sm sm:text-base">{session.code}</p>
           </div>
         </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 space-y-6 mt-6">
 
         <div className="flex gap-2 flex-wrap">
           {session.players.map(player => (
-            <div key={player.id} className="flex items-center gap-2 bg-muted rounded-full px-3 py-1">
-              <img src={player.avatar} alt={player.pseudo} className="w-6 h-6 rounded-full" />
-              <span className="text-sm">{player.pseudo}</span>
+            <div key={player.id} className="flex items-center gap-2 bg-muted rounded-full px-4 py-2">
+              <img src={player.avatar} alt={player.pseudo} className="w-8 h-8 rounded-full" />
+              <span className="text-base">{player.pseudo}</span>
             </div>
           ))}
         </div>
@@ -67,36 +71,36 @@ const Dashboard = () => {
           <h2 className="text-xl font-bold">Boîtes à débloquer</h2>
           {session.boxes.map(box => (
             <Card key={box.type} className="p-4">
-              <div className="flex items-start gap-4">
+              <div className="flex flex-col sm:flex-row items-start gap-4">
                 <img 
                   src={boxImages[box.type]} 
                   alt={box.name}
-                  className="w-16 h-16 rounded-lg object-cover shadow-md"
+                  className="w-full sm:w-20 h-32 sm:h-20 rounded-lg object-cover shadow-md"
                 />
-                <div className="flex-1">
+                <div className="flex-1 w-full">
                   <h3 className="font-bold text-lg">{box.name}</h3>
                   <p className="text-sm text-muted-foreground">{box.subtitle}</p>
                   {box.status === 'unlocked' && (
-                    <div className="mt-2 bg-success/10 text-success rounded p-2 text-sm font-mono">
+                    <div className="mt-2 bg-success/10 text-success rounded p-3 text-base font-mono">
                       Code: {box.unlockCode}
                     </div>
                   )}
                 </div>
-                <div>
+                <div className="w-full sm:w-auto">
                   {box.status === 'locked' && (
-                    <Button onClick={() => handleStartBox(box.type)}>
+                    <Button onClick={() => handleStartBox(box.type)} className="w-full sm:w-auto">
                       <Lock className="w-4 h-4 mr-2" />
                       Commencer
                     </Button>
                   )}
                   {box.status === 'in-progress' && (
-                    <Button onClick={() => handleStartBox(box.type)} className="gap-2">
+                    <Button onClick={() => handleStartBox(box.type)} className="w-full sm:w-auto gap-2">
                       <Lock className="w-4 h-4" />
                       Continuer
                     </Button>
                   )}
                   {box.status === 'unlocked' && (
-                    <CheckCircle className="w-8 h-8 text-success" />
+                    <CheckCircle className="w-10 h-10 text-success mx-auto sm:mx-0" />
                   )}
                 </div>
               </div>
@@ -104,11 +108,11 @@ const Dashboard = () => {
           ))}
         </div>
 
-        <div className="text-center">
-          <p className="text-lg font-semibold">
+        <Card className="p-4 bg-accent/20 border-accent">
+          <p className="text-lg font-semibold text-center">
             Pièces collectées: {session.codesValidated.length}/4
           </p>
-        </div>
+        </Card>
       </div>
     </div>
   );

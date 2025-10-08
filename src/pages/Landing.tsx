@@ -68,7 +68,7 @@ const Landing = () => {
           </div>
 
           {/* CTA */}
-          <Button onClick={() => navigate('/connect')} size="lg" className="w-full md:w-auto text-lg px-12 py-6 bg-secondary hover:bg-secondary/90 shadow-xl hover:shadow-2xl transition-all hover:scale-105 text-gray-900">
+          <Button onClick={() => navigate('/connect')} size="lg" className="w-full text-lg px-8 bg-secondary hover:bg-secondary/90 shadow-xl hover:shadow-2xl transition-all hover:scale-105 text-gray-900">
             ACCEPTER LA MISSION →
           </Button>
         </div>

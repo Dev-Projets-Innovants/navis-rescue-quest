@@ -396,15 +396,15 @@ const Quiz = () => {
         </DialogContent>
       </Dialog>
 
-      <div className="min-h-screen bg-gradient-to-br from-primary via-primary/90 to-accent p-4">
-        <div className="max-w-2xl mx-auto space-y-6">
-          <Card className="p-6 bg-background/95 backdrop-blur">
-          <div className="flex items-center justify-between mb-4">
+      <div className="min-h-screen bg-gradient-to-br from-primary via-primary/90 to-accent pb-6">
+        {/* Sticky header avec timer */}
+        <div className="sticky top-0 z-10 bg-primary text-primary-foreground shadow-lg">
+          <div className="max-w-2xl mx-auto p-4 flex items-center justify-between">
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={handleBackToDashboard}
-              className="text-muted-foreground hover:text-foreground"
+              className="text-primary-foreground hover:text-primary-foreground hover:bg-white/20"
             >
               ← Retour
             </Button>
@@ -414,6 +414,10 @@ const Quiz = () => {
               onTimeUp={handleTimeUp}
             />
           </div>
+        </div>
+
+        <div className="max-w-2xl mx-auto px-4 space-y-6 mt-6">
+          <Card className="p-4 sm:p-6 bg-background/95 backdrop-blur">
 
           <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
             <div className="bg-primary/10 rounded-lg p-2">
@@ -443,18 +447,18 @@ const Quiz = () => {
                   <button
                     key={index}
                     onClick={() => handleAnswerSelect(index)}
-                    className={`w-full p-3 sm:p-4 text-left rounded-lg border-2 transition-all duration-300 relative text-sm sm:text-base ${
+                    className={`w-full min-h-[56px] p-4 text-left rounded-lg border-2 transition-all duration-300 relative ${
                       selectedAnswer === index
                         ? 'border-primary border-[3px] bg-primary/20 shadow-lg shadow-primary/30 scale-[1.02]'
                         : 'border-border hover:border-primary/50 hover:bg-muted/50'
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className={selectedAnswer === index ? 'font-semibold' : ''}>
+                      <span className={`text-base ${selectedAnswer === index ? 'font-semibold' : ''}`}>
                         {option}
                       </span>
                       {selectedAnswer === index && (
-                        <Check className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+                        <Check className="w-6 h-6 text-primary flex-shrink-0" />
                       )}
                     </div>
                   </button>
@@ -494,7 +498,7 @@ const Quiz = () => {
                   return (
                     <div
                       key={index}
-                      className={`w-full p-3 sm:p-4 rounded-lg border-2 transition-all text-sm sm:text-base ${
+                      className={`w-full min-h-[56px] p-4 rounded-lg border-2 transition-all ${
                         isCorrect
                           ? 'border-green-500 bg-green-50 dark:bg-green-950/30'
                           : isSelected
@@ -503,9 +507,9 @@ const Quiz = () => {
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className="flex-1">{option}</span>
-                        {isCorrect && <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />}
-                        {isSelected && !isCorrect && <XCircle className="w-5 h-5 text-red-600 flex-shrink-0" />}
+                        <span className="flex-1 text-base">{option}</span>
+                        {isCorrect && <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />}
+                        {isSelected && !isCorrect && <XCircle className="w-6 h-6 text-red-600 flex-shrink-0" />}
                       </div>
                     </div>
                   );

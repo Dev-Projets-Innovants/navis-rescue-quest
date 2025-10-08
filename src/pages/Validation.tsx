@@ -78,13 +78,17 @@ const Validation = () => {
   const progress = (validatedCount / 4) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary via-primary/90 to-accent p-4">
-      <div className="max-w-2xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-primary via-primary/90 to-accent pb-6">
+      {/* Sticky header avec timer */}
+      <div className="sticky top-0 z-10 bg-primary text-primary-foreground shadow-lg">
+        <div className="max-w-2xl mx-auto p-4 flex items-center justify-center">
+          <Timer startTime={session.startTime} />
+        </div>
+      </div>
+
+      <div className="max-w-2xl mx-auto px-4 space-y-6 mt-6">
         <Card className="p-6 bg-background/95 backdrop-blur">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold">VALIDATION DES CODES</h1>
-            <Timer startTime={session.startTime} />
-          </div>
+          <h1 className="text-xl sm:text-2xl font-bold mb-6 text-center">VALIDATION DES CODES</h1>
 
           <div className="space-y-4 mb-6">
             {(['A', 'B', 'C', 'D'] as BoxType[]).map((boxType) => {
@@ -110,17 +114,18 @@ const Validation = () => {
                     </div>
 
                     {!isValidated && isUnlocked && (
-                      <div className="flex gap-2">
+                      <div className="flex flex-col sm:flex-row gap-2">
                         <Input
                           value={codes[boxType]}
                           onChange={(e) => handleCodeChange(boxType, e.target.value)}
                           placeholder={`Code ${boxType}`}
-                          className="font-mono"
+                          className="font-mono text-lg"
                           maxLength={11}
                         />
                         <Button 
                           onClick={() => handleValidate(boxType)}
                           disabled={codes[boxType].length < 8}
+                          className="w-full sm:w-auto"
                         >
                           Valider
                         </Button>

@@ -111,18 +111,18 @@ const Connect = () => {
             {!createdCode ? (
               <>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Ton pseudo</label>
+                  <label className="text-base font-medium">Ton pseudo</label>
                   <Input
                     placeholder="Capitaine..."
                     value={pseudo}
                     onChange={(e) => setPseudo(e.target.value)}
                     maxLength={20}
+                    className="text-lg"
                   />
                 </div>
                 <Button 
                   onClick={handleCreateSession} 
                   className="w-full"
-                  size="lg"
                   disabled={isCreating}
                 >
                   {isCreating ? 'Création...' : 'Créer la session'}
@@ -155,7 +155,6 @@ const Connect = () => {
                 <Button 
                   onClick={handleStartMission}
                   className="w-full"
-                  size="lg"
                 >
                   Lancer la mission →
                 </Button>
@@ -165,27 +164,28 @@ const Connect = () => {
 
           <TabsContent value="join" className="space-y-4 pt-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Code d'équipe</label>
+              <label className="text-base font-medium">Code d'équipe</label>
               <Input
                 placeholder="BOAT-XXXX"
                 value={sessionCode}
                 onChange={(e) => setSessionCode(e.target.value.toUpperCase())}
                 maxLength={9}
+                className="text-lg font-mono"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Ton pseudo</label>
+              <label className="text-base font-medium">Ton pseudo</label>
               <Input
                 placeholder="Équipier..."
                 value={pseudo}
                 onChange={(e) => setPseudo(e.target.value)}
                 maxLength={20}
+                className="text-lg"
               />
             </div>
             <Button 
               onClick={handleJoinSession}
               className="w-full"
-              size="lg"
               disabled={isJoining}
             >
               {isJoining ? 'Connexion...' : 'Rejoindre →'}
