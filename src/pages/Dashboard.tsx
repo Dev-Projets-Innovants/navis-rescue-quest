@@ -89,6 +89,11 @@ const Dashboard = () => {
                       Commencer
                     </Button>
                   )}
+                  {box.status === 'in-progress' && (
+                    <Button disabled variant="outline">
+                      En cours...
+                    </Button>
+                  )}
                   {box.status === 'unlocked' && (
                     <CheckCircle className="w-8 h-8 text-success" />
                   )}

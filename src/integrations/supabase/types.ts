@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      box_attempts: {
+        Row: {
+          box_type: Database["public"]["Enums"]["box_type"]
+          ended_at: string | null
+          id: string
+          player_id: string
+          score: number | null
+          session_id: string
+          started_at: string
+          success: boolean | null
+        }
+        Insert: {
+          box_type: Database["public"]["Enums"]["box_type"]
+          ended_at?: string | null
+          id?: string
+          player_id: string
+          score?: number | null
+          session_id: string
+          started_at?: string
+          success?: boolean | null
+        }
+        Update: {
+          box_type?: Database["public"]["Enums"]["box_type"]
+          ended_at?: string | null
+          id?: string
+          player_id?: string
+          score?: number | null
+          session_id?: string
+          started_at?: string
+          success?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "box_attempts_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "session_players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "box_attempts_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "game_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       box_unlocks: {
         Row: {
           box_type: Database["public"]["Enums"]["box_type"]
@@ -117,6 +165,7 @@ export type Database = {
           box_type: Database["public"]["Enums"]["box_type"]
           correct_answer: number
           created_at: string
+          explanation: string | null
           id: string
           image_url: string | null
           options: Json
@@ -126,6 +175,7 @@ export type Database = {
           box_type: Database["public"]["Enums"]["box_type"]
           correct_answer: number
           created_at?: string
+          explanation?: string | null
           id: string
           image_url?: string | null
           options: Json
@@ -135,6 +185,7 @@ export type Database = {
           box_type?: Database["public"]["Enums"]["box_type"]
           correct_answer?: number
           created_at?: string
+          explanation?: string | null
           id?: string
           image_url?: string | null
           options?: Json

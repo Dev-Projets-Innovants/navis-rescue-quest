@@ -63,7 +63,8 @@ export const useGameSession = () => {
           id: q.id,
           question: q.question_text,
           options: q.options as string[],
-          correctAnswer: q.correct_answer
+          correctAnswer: q.correct_answer,
+          explanation: q.explanation
         })) || [],
         answers: []
       }));
@@ -139,19 +140,32 @@ export const useGameSession = () => {
         .select('*')
         .eq('session_id', sessionData.id);
 
+      // Fetch active attempts to check in-progress boxes
+      const { data: attemptsData } = await supabase
+        .from('box_attempts')
+        .select('box_type, player_id')
+        .eq('session_id', sessionData.id)
+        .is('ended_at', null);
+
       const boxes = (['A', 'B', 'C', 'D'] as BoxType[]).map(type => {
         const isUnlocked = unlocksData?.some(u => u.box_type === type && u.code_validated);
+        const activeAttempt = attemptsData?.find(a => a.box_type === type);
+        const status = isUnlocked ? 'unlocked' as const : 
+                      activeAttempt ? 'in-progress' as const : 
+                      'locked' as const;
+        
         return {
           type,
           name: boxInfo[type].name,
           subtitle: boxInfo[type].subtitle,
-          status: isUnlocked ? 'unlocked' as const : 'locked' as const,
+          status,
           unlockCode: boxInfo[type].unlockCode,
           questions: questionsData?.filter(q => q.box_type === type).map(q => ({
             id: q.id,
             question: q.question_text,
             options: q.options as string[],
-            correctAnswer: q.correct_answer
+            correctAnswer: q.correct_answer,
+            explanation: q.explanation
           })) || [],
           answers: []
         };
@@ -219,19 +233,32 @@ export const useGameSession = () => {
         .select('*')
         .eq('session_id', sessionData.id);
 
+      // Fetch active attempts to check in-progress boxes
+      const { data: attemptsData } = await supabase
+        .from('box_attempts')
+        .select('box_type, player_id')
+        .eq('session_id', sessionData.id)
+        .is('ended_at', null);
+
       const boxes = (['A', 'B', 'C', 'D'] as BoxType[]).map(type => {
         const isUnlocked = unlocksData?.some(u => u.box_type === type && u.code_validated);
+        const activeAttempt = attemptsData?.find(a => a.box_type === type);
+        const status = isUnlocked ? 'unlocked' as const : 
+                      activeAttempt ? 'in-progress' as const : 
+                      'locked' as const;
+        
         return {
           type,
           name: boxInfo[type].name,
           subtitle: boxInfo[type].subtitle,
-          status: isUnlocked ? 'unlocked' as const : 'locked' as const,
+          status,
           unlockCode: boxInfo[type].unlockCode,
           questions: questionsData?.filter(q => q.box_type === type).map(q => ({
             id: q.id,
             question: q.question_text,
             options: q.options as string[],
-            correctAnswer: q.correct_answer
+            correctAnswer: q.correct_answer,
+            explanation: q.explanation
           })) || [],
           answers: []
         };

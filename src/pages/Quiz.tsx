@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -6,9 +6,15 @@ import { Timer } from '@/components/Timer';
 import { useGameSession } from '@/hooks/useGameSession';
 import { usePlayerAnswers } from '@/hooks/usePlayerAnswers';
 import { useBoxUnlock } from '@/hooks/useBoxUnlock';
+import { useBoxAttempts } from '@/hooks/useBoxAttempts';
 import { getQuestionsForBox } from '@/lib/gameStorage';
+import { shuffleArray } from '@/lib/utils';
 import { BoxType } from '@/types/game';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
+
+const QUIZ_DURATION = 600; // 10 minutes in seconds
+const PASS_THRESHOLD = 0.6; // 60% minimum to pass
 
 const Quiz = () => {
   const [searchParams] = useSearchParams();
@@ -17,9 +23,15 @@ const Quiz = () => {
   const { session, loading } = useGameSession();
   const { saveAnswer } = usePlayerAnswers();
   const { unlockBox } = useBoxUnlock();
+  const { startAttempt, endAttempt } = useBoxAttempts();
+  
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answers, setAnswers] = useState<boolean[]>([]);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const [quizStartTime] = useState(Date.now());
+  const [attemptId, setAttemptId] = useState<string | null>(null);
+  const [timeUp, setTimeUp] = useState(false);
 
   useEffect(() => {
     if (loading) return;
@@ -34,7 +46,35 @@ const Quiz = () => {
       navigate('/dashboard');
       return;
     }
-  }, [loading, session, boxType, navigate]);
+
+    // Start the attempt and assign box to player
+    const playerId = localStorage.getItem('current_player_id');
+    if (playerId && !attemptId) {
+      startAttempt(session.code, boxType, playerId).then(data => {
+        if (data) {
+          setAttemptId(data.id);
+        }
+      });
+
+      // Assign box to player
+      supabase
+        .from('session_players')
+        .update({ assigned_box: boxType })
+        .eq('id', playerId)
+        .then();
+    }
+
+    // Cleanup: unassign box when leaving
+    return () => {
+      if (playerId) {
+        supabase
+          .from('session_players')
+          .update({ assigned_box: null })
+          .eq('id', playerId)
+          .then();
+      }
+    };
+  }, [loading, session, boxType, navigate, attemptId, startAttempt]);
 
   if (!session || !boxType) return null;
 
@@ -42,10 +82,33 @@ const Quiz = () => {
   if (!box) return null;
 
   const questionsCount = getQuestionsForBox(boxType, session.players.length);
-  const questions = box.questions.slice(0, questionsCount);
-  const currentQuestion = questions[currentQuestionIndex];
+  
+  // Shuffle questions once using useMemo
+  const shuffledQuestions = useMemo(() => {
+    const questions = box.questions.slice(0, questionsCount);
+    return shuffleArray(questions);
+  }, [box.questions, questionsCount]);
+
+  const currentQuestion = shuffledQuestions[currentQuestionIndex];
+
+  const handleTimeUp = async () => {
+    setTimeUp(true);
+    toast.error('⏰ Temps écoulé ! La boîte reste verrouillée.');
+    
+    // Calculate final score
+    const score = (answers.filter(a => a).length / shuffledQuestions.length) * 100;
+    
+    if (attemptId) {
+      await endAttempt(attemptId, score, false);
+    }
+
+    setTimeout(() => {
+      navigate('/dashboard');
+    }, 3000);
+  };
 
   const handleAnswerSelect = (index: number) => {
+    if (showExplanation || timeUp) return;
     setSelectedAnswer(index);
   };
 
@@ -68,26 +131,59 @@ const Quiz = () => {
     if (isCorrect) {
       toast.success('Bonne réponse ! ✅');
     } else {
-      toast.error(`Mauvaise réponse. La bonne réponse était : ${currentQuestion.options[currentQuestion.correctAnswer]}`);
+      toast.error('Mauvaise réponse ❌');
     }
 
-    if (currentQuestionIndex < questions.length - 1) {
-      setTimeout(() => {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-        setSelectedAnswer(null);
-      }, 2000);
+    // Show explanation
+    setShowExplanation(true);
+  };
+
+  const handleNextQuestion = async () => {
+    if (currentQuestionIndex < shuffledQuestions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setSelectedAnswer(null);
+      setShowExplanation(false);
     } else {
-      // All questions answered - unlock the box
-      setTimeout(async () => {
-        if (session) {
-          await unlockBox(session.code, boxType);
-          navigate(`/unlock?box=${boxType}`);
-        }
-      }, 2000);
+      // Calculate final score
+      const score = (answers.filter(a => a).length / shuffledQuestions.length) * 100;
+      const success = score >= PASS_THRESHOLD * 100;
+
+      if (attemptId) {
+        await endAttempt(attemptId, score, success);
+      }
+
+      if (success) {
+        // Unlock the box
+        await unlockBox(session.code, boxType);
+        toast.success('🎉 Boîte débloquée !');
+        navigate(`/unlock?box=${boxType}`);
+      } else {
+        toast.error(`Score insuffisant (${Math.round(score)}%). Minimum requis: ${PASS_THRESHOLD * 100}%`);
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 3000);
+      }
     }
   };
 
-  const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+  const progress = ((currentQuestionIndex + 1) / shuffledQuestions.length) * 100;
+  const score = answers.length > 0 ? (answers.filter(a => a).length / answers.length) * 100 : 0;
+
+  if (timeUp) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-destructive/20 via-background to-destructive/10 p-4 flex items-center justify-center">
+        <Card className="p-8 max-w-md text-center">
+          <h2 className="text-2xl font-bold mb-4">⏰ Temps écoulé !</h2>
+          <p className="text-muted-foreground mb-4">
+            Le temps imparti pour cette boîte est écoulé.
+          </p>
+          <p className="text-sm">
+            Score final: {Math.round(score)}%
+          </p>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary via-primary/90 to-accent p-4">
@@ -101,58 +197,123 @@ const Quiz = () => {
                 <p className="text-sm text-muted-foreground">{box.subtitle}</p>
               </div>
             </div>
-            <Timer startTime={session.startTime} />
+            <Timer 
+              startTime={quizStartTime} 
+              duration={QUIZ_DURATION}
+              onTimeUp={handleTimeUp}
+            />
           </div>
 
           <div className="flex items-center justify-between mb-6">
             <span className="text-sm text-muted-foreground">
-              Question {currentQuestionIndex + 1}/{questions.length}
+              Question {currentQuestionIndex + 1}/{shuffledQuestions.length}
             </span>
-            <span className="text-sm text-muted-foreground">
-              👥 {session.players.length} joueur{session.players.length > 1 ? 's' : ''}
+            <span className="text-sm font-bold">
+              Score: {Math.round(score)}%
             </span>
           </div>
 
-          <div className="space-y-6">
-            <h3 className="text-lg font-medium">{currentQuestion.question}</h3>
+          {!showExplanation ? (
+            <div className="space-y-6">
+              <h3 className="text-lg font-medium">{currentQuestion.question}</h3>
 
-            <div className="space-y-3">
-              {currentQuestion.options.map((option, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleAnswerSelect(index)}
-                  className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
-                    selectedAnswer === index
-                      ? 'border-accent bg-accent/10'
-                      : 'border-border hover:border-accent/50'
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-
-            <Button 
-              onClick={handleValidate} 
-              className="w-full"
-              disabled={selectedAnswer === null}
-            >
-              VALIDER LA RÉPONSE
-            </Button>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Progression de la boîte</span>
-                <span className="font-bold">{Math.round(progress)}%</span>
+              <div className="space-y-3">
+                {currentQuestion.options.map((option, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleAnswerSelect(index)}
+                    className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
+                      selectedAnswer === index
+                        ? 'border-accent bg-accent/10'
+                        : 'border-border hover:border-accent/50'
+                    }`}
+                  >
+                    {option}
+                  </button>
+                ))}
               </div>
-              <div className="h-2 bg-muted rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-accent transition-all duration-500"
-                  style={{ width: `${progress}%` }}
-                />
+
+              <Button 
+                onClick={handleValidate} 
+                className="w-full"
+                disabled={selectedAnswer === null}
+              >
+                VALIDER LA RÉPONSE
+              </Button>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Progression de la boîte</span>
+                  <span className="font-bold">{Math.round(progress)}%</span>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-accent transition-all duration-500"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="space-y-6">
+              <h3 className="text-lg font-medium">{currentQuestion.question}</h3>
+
+              <div className="space-y-3">
+                {currentQuestion.options.map((option, index) => {
+                  const isCorrect = index === currentQuestion.correctAnswer;
+                  const isSelected = index === selectedAnswer;
+                  
+                  return (
+                    <div
+                      key={index}
+                      className={`w-full p-4 rounded-lg border-2 ${
+                        isCorrect
+                          ? 'border-success bg-success/10'
+                          : isSelected
+                          ? 'border-destructive bg-destructive/10'
+                          : 'border-border bg-muted/50'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span>{option}</span>
+                        {isCorrect && <span className="text-success font-bold">✓ Bonne réponse</span>}
+                        {isSelected && !isCorrect && <span className="text-destructive font-bold">✗</span>}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {currentQuestion.explanation && (
+                <div className="bg-primary/10 border-l-4 border-primary p-4 rounded">
+                  <p className="font-semibold mb-2">💡 Explication</p>
+                  <p className="text-sm">{currentQuestion.explanation}</p>
+                </div>
+              )}
+
+              <Button 
+                onClick={handleNextQuestion} 
+                className="w-full"
+              >
+                {currentQuestionIndex < shuffledQuestions.length - 1 
+                  ? 'QUESTION SUIVANTE' 
+                  : 'VOIR LE RÉSULTAT'}
+              </Button>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Progression de la boîte</span>
+                  <span className="font-bold">{Math.round(progress)}%</span>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-accent transition-all duration-500"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </Card>
       </div>
     </div>

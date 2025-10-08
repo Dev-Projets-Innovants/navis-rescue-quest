@@ -13,6 +13,11 @@ export interface Question {
   question: string;
   options: string[];
   correctAnswer: number;
+  explanation?: string;
+}
+
+export interface PlayerWithBox extends Player {
+  assignedBox?: BoxType | null;
 }
 
 export interface Box {

@@ -4,9 +4,11 @@ import { Clock } from 'lucide-react';
 interface TimerProps {
   startTime: number;
   endTime?: number;
+  duration?: number; // Duration in seconds for countdown mode
+  onTimeUp?: () => void;
 }
 
-export const Timer = ({ startTime, endTime }: TimerProps) => {
+export const Timer = ({ startTime, endTime, duration, onTimeUp }: TimerProps) => {
   const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
@@ -16,23 +18,51 @@ export const Timer = ({ startTime, endTime }: TimerProps) => {
     }
 
     const interval = setInterval(() => {
-      setElapsed(Date.now() - startTime);
+      const currentElapsed = Date.now() - startTime;
+      setElapsed(currentElapsed);
+
+      // Countdown mode: check if time is up
+      if (duration && currentElapsed >= duration * 1000) {
+        clearInterval(interval);
+        if (onTimeUp) onTimeUp();
+      }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [startTime, endTime]);
+  }, [startTime, endTime, duration, onTimeUp]);
 
   const formatTime = (ms: number) => {
     const totalSeconds = Math.floor(ms / 1000);
+    
+    // Countdown mode
+    if (duration) {
+      const remainingSeconds = Math.max(0, duration - totalSeconds);
+      const minutes = Math.floor(remainingSeconds / 60);
+      const seconds = remainingSeconds % 60;
+      const isLowTime = remainingSeconds <= 60;
+      return {
+        text: `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`,
+        isLowTime
+      };
+    }
+    
+    // Count up mode
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    return {
+      text: `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`,
+      isLowTime: false
+    };
   };
 
+  const timeData = formatTime(elapsed);
+
   return (
-    <div className="flex items-center gap-2 text-2xl font-bold text-primary">
+    <div className={`flex items-center gap-2 text-2xl font-bold ${
+      timeData.isLowTime ? 'text-destructive animate-pulse' : 'text-primary'
+    }`}>
       <Clock className="w-6 h-6" />
-      <span>{formatTime(elapsed)}</span>
+      <span>{timeData.text}</span>
     </div>
   );
 };
