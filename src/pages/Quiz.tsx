@@ -312,13 +312,20 @@ const Quiz = () => {
                   <button
                     key={index}
                     onClick={() => handleAnswerSelect(index)}
-                    className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
+                    className={`w-full p-4 text-left rounded-lg border-2 transition-all duration-300 relative ${
                       selectedAnswer === index
-                        ? 'border-accent bg-accent/10'
-                        : 'border-border hover:border-accent/50'
+                        ? 'border-primary border-[3px] bg-primary/20 shadow-lg shadow-primary/30 scale-[1.02]'
+                        : 'border-border hover:border-primary/50 hover:bg-muted/50'
                     }`}
                   >
-                    {option}
+                    <div className="flex items-center justify-between">
+                      <span className={selectedAnswer === index ? 'font-semibold' : ''}>
+                        {option}
+                      </span>
+                      {selectedAnswer === index && (
+                        <span className="text-primary text-2xl">✓</span>
+                      )}
+                    </div>
                   </button>
                 ))}
               </div>
