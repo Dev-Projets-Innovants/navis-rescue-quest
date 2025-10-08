@@ -348,6 +348,26 @@ const Quiz = () => {
             <div className="space-y-6">
               <h3 className="text-lg font-medium">{currentQuestion.question}</h3>
 
+              {/* Message d'erreur visible si mauvaise réponse */}
+              {selectedAnswer !== currentQuestion.correctAnswer && (
+                <div className="bg-destructive/20 border-2 border-destructive rounded-lg p-4">
+                  <p className="text-destructive font-bold text-center">
+                    ❌ Dommage ! La bonne réponse était :
+                  </p>
+                </div>
+              )}
+
+              {/* Image en évidence si mauvaise réponse */}
+              {selectedAnswer !== currentQuestion.correctAnswer && currentQuestion.image && (
+                <div className="border-4 border-destructive/30 rounded-lg overflow-hidden">
+                  <img 
+                    src={currentQuestion.image} 
+                    alt="Illustration de la réponse" 
+                    className="w-full"
+                  />
+                </div>
+              )}
+
               <div className="space-y-3">
                 {currentQuestion.options.map((option, index) => {
                   const isCorrect = index === currentQuestion.correctAnswer;
@@ -356,18 +376,18 @@ const Quiz = () => {
                   return (
                     <div
                       key={index}
-                      className={`w-full p-4 rounded-lg border-2 ${
+                      className={`w-full p-4 rounded-lg transition-all ${
                         isCorrect
-                          ? 'border-success bg-success/10'
+                          ? 'border-[3px] border-success bg-success/20 shadow-lg shadow-success/20'
                           : isSelected
-                          ? 'border-destructive bg-destructive/10'
-                          : 'border-border bg-muted/50'
+                          ? 'border-2 border-destructive bg-destructive/10'
+                          : 'border-2 border-border bg-muted/50'
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span>{option}</span>
-                        {isCorrect && <span className="text-success font-bold">✓ Bonne réponse</span>}
-                        {isSelected && !isCorrect && <span className="text-destructive font-bold">✗</span>}
+                        <span className={isCorrect ? 'font-semibold' : ''}>{option}</span>
+                        {isCorrect && <span className="text-success font-bold text-lg">✅ Bonne réponse</span>}
+                        {isSelected && !isCorrect && <span className="text-destructive font-bold text-lg">❌</span>}
                       </div>
                     </div>
                   );
@@ -378,7 +398,8 @@ const Quiz = () => {
                 <div className="bg-primary/10 border-l-4 border-primary p-4 rounded space-y-3">
                   <p className="font-semibold">💡 Explication</p>
                   <p className="text-sm">{currentQuestion.explanation}</p>
-                  {currentQuestion.image && (
+                  {/* Image normale si bonne réponse */}
+                  {selectedAnswer === currentQuestion.correctAnswer && currentQuestion.image && (
                     <img 
                       src={currentQuestion.image} 
                       alt="Illustration de la réponse" 
