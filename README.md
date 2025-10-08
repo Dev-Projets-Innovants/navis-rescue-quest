@@ -6,7 +6,7 @@
 
 ### Jeu d'énigmes collaboratif en temps réel
 
-![EPSI](./public/logo-epsi.png) &nbsp;&nbsp;&nbsp;&nbsp; ![WIS](./public/logo-wis.png)
+<img src="./public/logo-epsi.png" alt="EPSI" width="200"/> &nbsp;&nbsp;&nbsp;&nbsp; <img src="./public/logo-wis.png" alt="WIS" width="200"/>
 
 ---
 
