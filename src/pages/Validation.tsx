@@ -10,6 +10,8 @@ import { BoxType } from '@/types/game';
 import { CheckCircle, Lock, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
+// Page de validation des codes de déverrouillage
+
 const Validation = () => {
   const navigate = useNavigate();
   const { session, loading, refreshSession } = useGameSession();
