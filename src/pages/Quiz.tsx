@@ -65,29 +65,37 @@ const Quiz = () => {
     const playerId = localStorage.getItem('current_player_id');
     if (playerId && !attemptId && !progressLoaded) {
       getActiveAttempt(session.code, boxType).then(activeAttempt => {
-        if (activeAttempt && activeAttempt.player_id === playerId) {
-          // Restore existing attempt
-          setAttemptId(activeAttempt.id);
-          
-          // Restore progress
-          if (activeAttempt.current_question_index !== null) {
-            setCurrentQuestionIndex(activeAttempt.current_question_index);
+        if (activeAttempt) {
+          // Check if the active attempt belongs to the current player
+          if (activeAttempt.player_id === playerId) {
+            // Restore existing attempt
+            setAttemptId(activeAttempt.id);
+            
+            // Restore progress
+            if (activeAttempt.current_question_index !== null) {
+              setCurrentQuestionIndex(activeAttempt.current_question_index);
+            }
+            
+            if (activeAttempt.answers) {
+              const savedAnswers = typeof activeAttempt.answers === 'string' 
+                ? JSON.parse(activeAttempt.answers)
+                : activeAttempt.answers;
+              setAnswers(savedAnswers);
+            }
+            
+            // Restore quiz start time
+            if (activeAttempt.quiz_start_time) {
+              setQuizStartTime(new Date(activeAttempt.quiz_start_time).getTime());
+            }
+            
+            setProgressLoaded(true);
+          } else {
+            // Someone else is already doing this box
+            toast.error('Cette boîte est déjà en cours par un autre joueur !');
+            navigate('/dashboard');
+            return;
           }
-          
-          if (activeAttempt.answers) {
-            const savedAnswers = typeof activeAttempt.answers === 'string' 
-              ? JSON.parse(activeAttempt.answers)
-              : activeAttempt.answers;
-            setAnswers(savedAnswers);
-          }
-          
-          // Restore quiz start time
-          if (activeAttempt.quiz_start_time) {
-            setQuizStartTime(new Date(activeAttempt.quiz_start_time).getTime());
-          }
-          
-          setProgressLoaded(true);
-        } else if (!activeAttempt) {
+        } else {
           // Start new attempt
           startAttempt(session.code, boxType, playerId).then(data => {
             if (data) {
