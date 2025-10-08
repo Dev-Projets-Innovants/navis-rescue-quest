@@ -59,15 +59,8 @@ const Unlock = () => {
             <p className="text-xl font-medium">{box.name}</p>
           </div>
 
-          <div className="py-8">
-            <div className="inline-block animate-pulse">
-              <img 
-                src={missionNavisLogo} 
-                alt="Mission Navis" 
-                className="w-32 h-32 mx-auto object-contain"
-              />
-              <p className="text-sm text-muted-foreground mt-2">Pièce du bateau récupérée</p>
-            </div>
+          <div className="py-4">
+            <p className="text-lg font-medium">🚢 Pièce du bateau récupérée</p>
           </div>
 
           <div className="space-y-3">
