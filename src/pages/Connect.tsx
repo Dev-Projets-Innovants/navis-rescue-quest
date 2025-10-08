@@ -4,18 +4,21 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Copy, Users, Clipboard } from 'lucide-react';
-import { createSession, joinSession } from '@/lib/gameStorage';
+import { Copy, Users } from 'lucide-react';
+import { useGameSession } from '@/hooks/useGameSession';
 import { useToast } from '@/hooks/use-toast';
 
 const Connect = () => {
   const [pseudo, setPseudo] = useState('');
   const [sessionCode, setSessionCode] = useState('');
   const [createdCode, setCreatedCode] = useState('');
+  const [isCreating, setIsCreating] = useState(false);
+  const [isJoining, setIsJoining] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { createSession, joinSession } = useGameSession();
 
-  const handleCreateSession = () => {
+  const handleCreateSession = async () => {
     if (!pseudo.trim()) {
       toast({
         title: "Pseudo requis",
@@ -25,7 +28,19 @@ const Connect = () => {
       return;
     }
 
-    const session = createSession(pseudo);
+    setIsCreating(true);
+    const session = await createSession(pseudo);
+    setIsCreating(false);
+
+    if (!session) {
+      toast({
+        title: "Erreur",
+        description: "Impossible de créer la session",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setCreatedCode(session.code);
     
     toast({
@@ -34,7 +49,7 @@ const Connect = () => {
     });
   };
 
-  const handleJoinSession = () => {
+  const handleJoinSession = async () => {
     if (!pseudo.trim() || !sessionCode.trim()) {
       toast({
         title: "Informations manquantes",
@@ -44,11 +59,14 @@ const Connect = () => {
       return;
     }
 
-    const session = joinSession(sessionCode.toUpperCase(), pseudo);
+    setIsJoining(true);
+    const session = await joinSession(sessionCode.toUpperCase(), pseudo);
+    setIsJoining(false);
+
     if (!session) {
       toast({
         title: "Erreur",
-        description: "Session introuvable",
+        description: "Session introuvable ou pseudo déjà utilisé",
         variant: "destructive"
       });
       return;
@@ -105,8 +123,9 @@ const Connect = () => {
                   onClick={handleCreateSession} 
                   className="w-full"
                   size="lg"
+                  disabled={isCreating}
                 >
-                  Créer la session
+                  {isCreating ? 'Création...' : 'Créer la session'}
                 </Button>
               </>
             ) : (
@@ -167,8 +186,9 @@ const Connect = () => {
               onClick={handleJoinSession}
               className="w-full"
               size="lg"
+              disabled={isJoining}
             >
-              Rejoindre →
+              {isJoining ? 'Connexion...' : 'Rejoindre →'}
             </Button>
           </TabsContent>
         </Tabs>

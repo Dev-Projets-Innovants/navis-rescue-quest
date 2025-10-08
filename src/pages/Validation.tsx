@@ -4,14 +4,15 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Timer } from '@/components/Timer';
-import { getCurrentSession, updateSession } from '@/lib/gameStorage';
+import { useGameSession } from '@/hooks/useGameSession';
+import { supabase } from '@/integrations/supabase/client';
 import { BoxType } from '@/types/game';
 import { CheckCircle, Lock, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
 const Validation = () => {
   const navigate = useNavigate();
-  const [session, setSession] = useState(getCurrentSession());
+  const { session, loading, refreshSession } = useGameSession();
   const [codes, setCodes] = useState<Record<BoxType, string>>({
     A: '',
     B: '',
@@ -20,35 +21,49 @@ const Validation = () => {
   });
 
   useEffect(() => {
-    if (!session) {
+    if (!loading && !session) {
       navigate('/dashboard');
     }
-  }, []);
+  }, [loading, session, navigate]);
 
-  if (!session) return null;
+  useEffect(() => {
+    // Refresh session every 2 seconds
+    const interval = setInterval(() => {
+      refreshSession();
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [refreshSession]);
+
+  if (loading || !session) return null;
 
   const handleCodeChange = (boxType: BoxType, value: string) => {
     setCodes({ ...codes, [boxType]: value.toUpperCase() });
   };
 
-  const handleValidate = (boxType: BoxType) => {
+  const handleValidate = async (boxType: BoxType) => {
     const box = session.boxes.find(b => b.type === boxType);
     if (!box) return;
 
     if (codes[boxType] === box.unlockCode) {
       if (!session.codesValidated.includes(boxType)) {
-        const updatedSession = { ...session };
-        updatedSession.codesValidated.push(boxType);
+        // Mark code as validated in session
+        session.codesValidated.push(boxType);
         
-        if (updatedSession.codesValidated.length === 4) {
-          updatedSession.endTime = Date.now();
+        if (session.codesValidated.length === 4) {
+          // Update end time in database
+          const { error } = await supabase
+            .from('game_sessions')
+            .update({ end_time: new Date().toISOString() })
+            .eq('session_code', session.code);
+            
+          if (error) console.error('Error updating end time:', error);
         }
         
-        updateSession(updatedSession);
-        setSession(updatedSession);
         toast.success(`Code ${boxType} validé !`);
+        await refreshSession();
         
-        if (updatedSession.codesValidated.length === 4) {
+        if (session.codesValidated.length === 4) {
           setTimeout(() => navigate('/victory'), 1500);
         }
       }

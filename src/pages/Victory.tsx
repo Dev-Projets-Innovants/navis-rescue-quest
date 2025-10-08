@@ -1,22 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { getCurrentSession, clearSession } from '@/lib/gameStorage';
+import { useGameSession } from '@/hooks/useGameSession';
 import { Share2, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 
 const Victory = () => {
   const navigate = useNavigate();
-  const [session] = useState(getCurrentSession());
+  const { session, loading, clearSession } = useGameSession();
 
   useEffect(() => {
-    if (!session || session.codesValidated.length !== 4 || !session.endTime) {
+    if (!loading && (!session || session.codesValidated.length !== 4 || !session.endTime)) {
       navigate('/dashboard');
     }
-  }, []);
+  }, [loading, session, navigate]);
 
-  if (!session || !session.endTime) return null;
+  if (loading || !session || !session.endTime) return null;
 
   const duration = session.endTime - session.startTime;
   const minutes = Math.floor(duration / 60000);

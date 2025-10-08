@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentSession, updateSession } from '@/lib/gameStorage';
+import { useGameSession } from '@/hooks/useGameSession';
 import { Timer } from '@/components/Timer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Lock, Unlock, CheckCircle } from 'lucide-react';
+import { Lock, CheckCircle } from 'lucide-react';
 import { BoxType } from '@/types/game';
 import boxHealthImg from '@/assets/box-health.jpg';
 import boxTourismImg from '@/assets/box-tourism.jpg';
@@ -19,16 +19,25 @@ const boxImages: Record<BoxType, string> = {
 };
 
 const Dashboard = () => {
-  const [session, setSession] = useState(getCurrentSession());
+  const { session, loading, refreshSession } = useGameSession();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!session) {
+    if (!loading && !session) {
       navigate('/connect');
     }
-  }, [session, navigate]);
+  }, [loading, session, navigate]);
 
-  if (!session) return null;
+  useEffect(() => {
+    // Refresh session every 3 seconds to get updates
+    const interval = setInterval(() => {
+      refreshSession();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [refreshSession]);
+
+  if (loading || !session) return null;
 
   const handleStartBox = (boxType: BoxType) => {
     navigate(`/quiz/${boxType}`);

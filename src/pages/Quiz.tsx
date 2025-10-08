@@ -3,20 +3,27 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Timer } from '@/components/Timer';
-import { getCurrentSession, updateSession, getQuestionsForBox } from '@/lib/gameStorage';
-import { BoxType, Question } from '@/types/game';
+import { useGameSession } from '@/hooks/useGameSession';
+import { usePlayerAnswers } from '@/hooks/usePlayerAnswers';
+import { useBoxUnlock } from '@/hooks/useBoxUnlock';
+import { getQuestionsForBox } from '@/lib/gameStorage';
+import { BoxType } from '@/types/game';
 import { toast } from 'sonner';
 
 const Quiz = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const boxType = searchParams.get('box') as BoxType;
-  const [session, setSession] = useState(getCurrentSession());
+  const { session, loading } = useGameSession();
+  const { saveAnswer } = usePlayerAnswers();
+  const { unlockBox } = useBoxUnlock();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answers, setAnswers] = useState<boolean[]>([]);
 
   useEffect(() => {
+    if (loading) return;
+    
     if (!session || !boxType) {
       navigate('/dashboard');
       return;
@@ -27,15 +34,7 @@ const Quiz = () => {
       navigate('/dashboard');
       return;
     }
-
-    if (box.status === 'locked') {
-      const updatedSession = { ...session };
-      const boxIndex = updatedSession.boxes.findIndex(b => b.type === boxType);
-      updatedSession.boxes[boxIndex].status = 'in-progress';
-      updateSession(updatedSession);
-      setSession(updatedSession);
-    }
-  }, []);
+  }, [loading, session, boxType, navigate]);
 
   if (!session || !boxType) return null;
 
@@ -50,7 +49,7 @@ const Quiz = () => {
     setSelectedAnswer(index);
   };
 
-  const handleValidate = () => {
+  const handleValidate = async () => {
     if (selectedAnswer === null) {
       toast.error('Sélectionne une réponse !');
       return;
@@ -59,6 +58,12 @@ const Quiz = () => {
     const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
     const newAnswers = [...answers, isCorrect];
     setAnswers(newAnswers);
+
+    // Save answer to database
+    const playerId = localStorage.getItem('current_player_id');
+    if (playerId) {
+      await saveAnswer(playerId, currentQuestion.id, isCorrect);
+    }
 
     if (isCorrect) {
       toast.success('Bonne réponse ! ✅');
@@ -72,13 +77,12 @@ const Quiz = () => {
         setSelectedAnswer(null);
       }, 2000);
     } else {
-      setTimeout(() => {
-        const updatedSession = { ...session };
-        const boxIndex = updatedSession.boxes.findIndex(b => b.type === boxType);
-        updatedSession.boxes[boxIndex].status = 'unlocked';
-        updatedSession.boxes[boxIndex].answers = newAnswers;
-        updateSession(updatedSession);
-        navigate(`/unlock?box=${boxType}`);
+      // All questions answered - unlock the box
+      setTimeout(async () => {
+        if (session) {
+          await unlockBox(session.code, boxType);
+          navigate(`/unlock?box=${boxType}`);
+        }
       }, 2000);
     }
   };

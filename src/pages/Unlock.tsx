@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { getCurrentSession } from '@/lib/gameStorage';
+import { useGameSession } from '@/hooks/useGameSession';
 import { BoxType } from '@/types/game';
 import { Copy, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
@@ -11,10 +11,12 @@ const Unlock = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const boxType = searchParams.get('box') as BoxType;
-  const [session] = useState(getCurrentSession());
+  const { session, loading } = useGameSession();
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
+    if (loading) return;
+    
     if (!session || !boxType) {
       navigate('/dashboard');
       return;
@@ -24,9 +26,9 @@ const Unlock = () => {
     if (!box || box.status !== 'unlocked') {
       navigate('/dashboard');
     }
-  }, []);
+  }, [loading, session, boxType, navigate]);
 
-  if (!session || !boxType) return null;
+  if (loading || !session || !boxType) return null;
 
   const box = session.boxes.find(b => b.type === boxType);
   if (!box) return null;
