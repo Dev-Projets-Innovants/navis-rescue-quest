@@ -3,6 +3,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Timer } from '@/components/Timer';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { useGameSession } from '@/hooks/useGameSession';
 import { usePlayerAnswers } from '@/hooks/usePlayerAnswers';
 import { useBoxUnlock } from '@/hooks/useBoxUnlock';
@@ -345,94 +347,82 @@ const Quiz = () => {
               </div>
             </div>
           ) : (
-            <div className="space-y-6">
-              <h3 className="text-lg font-medium">{currentQuestion.question}</h3>
-
-              {/* Message d'erreur visible si mauvaise réponse */}
-              {selectedAnswer !== currentQuestion.correctAnswer && (
-                <div className="bg-destructive/20 border-2 border-destructive rounded-lg p-4">
-                  <p className="text-destructive font-bold text-center">
-                    ❌ Dommage ! La bonne réponse était :
-                  </p>
-                </div>
-              )}
-
-              {/* Image en évidence si mauvaise réponse */}
-              {selectedAnswer !== currentQuestion.correctAnswer && currentQuestion.image && (
-                <div className="border-4 border-destructive/30 rounded-lg overflow-hidden">
-                  <img 
-                    src={currentQuestion.image} 
-                    alt="Illustration de la réponse" 
-                    className="w-full"
-                  />
-                </div>
-              )}
-
-              <div className="space-y-3">
-                {currentQuestion.options.map((option, index) => {
-                  const isCorrect = index === currentQuestion.correctAnswer;
-                  const isSelected = index === selectedAnswer;
-                  
-                  return (
-                    <div
-                      key={index}
-                      className={`w-full p-4 rounded-lg transition-all ${
-                        isCorrect
-                          ? 'border-[3px] border-success bg-success/20 shadow-lg shadow-success/20'
-                          : isSelected
-                          ? 'border-2 border-destructive bg-destructive/10'
-                          : 'border-2 border-border bg-muted/50'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className={isCorrect ? 'font-semibold' : ''}>{option}</span>
-                        {isCorrect && <span className="text-success font-bold text-lg">✅ Bonne réponse</span>}
-                        {isSelected && !isCorrect && <span className="text-destructive font-bold text-lg">❌</span>}
-                      </div>
-                    </div>
-                  );
-                })}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Progression de la boîte</span>
+                <span className="font-bold">{Math.round(progress)}%</span>
               </div>
-
-              {currentQuestion.explanation && (
-                <div className="bg-primary/10 border-l-4 border-primary p-4 rounded space-y-3">
-                  <p className="font-semibold">💡 Explication</p>
-                  <p className="text-sm">{currentQuestion.explanation}</p>
-                  {/* Image normale si bonne réponse */}
-                  {selectedAnswer === currentQuestion.correctAnswer && currentQuestion.image && (
-                    <img 
-                      src={currentQuestion.image} 
-                      alt="Illustration de la réponse" 
-                      className="w-full rounded-lg mt-3"
-                    />
-                  )}
-                </div>
-              )}
-
-              <Button 
-                onClick={handleNextQuestion} 
-                className="w-full"
-              >
-                {currentQuestionIndex < shuffledQuestions.length - 1 
-                  ? 'QUESTION SUIVANTE' 
-                  : 'VOIR LE RÉSULTAT'}
-              </Button>
-
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Progression de la boîte</span>
-                  <span className="font-bold">{Math.round(progress)}%</span>
-                </div>
-                <div className="h-2 bg-muted rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-accent transition-all duration-500"
-                    style={{ width: `${progress}%` }}
-                  />
-                </div>
+              <div className="h-2 bg-muted rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-accent transition-all duration-500"
+                  style={{ width: `${progress}%` }}
+                />
               </div>
             </div>
           )}
         </Card>
+
+        {/* Dialog popup pour l'explication */}
+        <Dialog open={showExplanation} onOpenChange={(open) => !open && handleNextQuestion()}>
+          <DialogContent className="max-w-2xl max-h-[90vh]">
+            <DialogHeader>
+              <DialogTitle>{currentQuestion.question}</DialogTitle>
+            </DialogHeader>
+            <ScrollArea className="max-h-[70vh] pr-4">
+              <div className="space-y-4">
+                {/* Options avec la bonne réponse */}
+                <div className="space-y-2">
+                  {currentQuestion.options.map((option, index) => {
+                    const isCorrect = index === currentQuestion.correctAnswer;
+                    const isSelected = index === selectedAnswer;
+                    
+                    return (
+                      <div
+                        key={index}
+                        className={`p-3 rounded-lg border-2 ${
+                          isCorrect
+                            ? 'border-success bg-success/10'
+                            : isSelected
+                            ? 'border-destructive bg-destructive/10'
+                            : 'border-border bg-muted/50'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span>{option}</span>
+                          {isCorrect && <span className="text-success font-bold">✓</span>}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Explication */}
+                {currentQuestion.explanation && (
+                  <div className="bg-primary/10 border-l-4 border-primary p-4 rounded">
+                    <p className="font-semibold mb-2">Explication :</p>
+                    <p className="text-sm">{currentQuestion.explanation}</p>
+                  </div>
+                )}
+
+                {/* Image */}
+                {currentQuestion.image && (
+                  <div className="bg-success/10 p-4 rounded-lg">
+                    <img 
+                      src={currentQuestion.image} 
+                      alt="Illustration" 
+                      className="w-full rounded"
+                    />
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+            <Button onClick={handleNextQuestion} className="w-full">
+              {currentQuestionIndex < shuffledQuestions.length - 1 
+                ? 'QUESTION SUIVANTE' 
+                : 'VOIR LE RÉSULTAT'}
+            </Button>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
