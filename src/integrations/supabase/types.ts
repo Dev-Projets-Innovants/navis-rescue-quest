@@ -14,7 +14,169 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      box_unlocks: {
+        Row: {
+          box_type: Database["public"]["Enums"]["box_type"]
+          code_validated: boolean
+          id: string
+          session_id: string
+          unlocked_at: string
+        }
+        Insert: {
+          box_type: Database["public"]["Enums"]["box_type"]
+          code_validated?: boolean
+          id?: string
+          session_id: string
+          unlocked_at?: string
+        }
+        Update: {
+          box_type?: Database["public"]["Enums"]["box_type"]
+          code_validated?: boolean
+          id?: string
+          session_id?: string
+          unlocked_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "box_unlocks_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "game_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      game_sessions: {
+        Row: {
+          created_at: string
+          end_time: string | null
+          id: string
+          session_code: string
+          start_time: string
+          status: Database["public"]["Enums"]["session_status"]
+        }
+        Insert: {
+          created_at?: string
+          end_time?: string | null
+          id?: string
+          session_code: string
+          start_time?: string
+          status?: Database["public"]["Enums"]["session_status"]
+        }
+        Update: {
+          created_at?: string
+          end_time?: string | null
+          id?: string
+          session_code?: string
+          start_time?: string
+          status?: Database["public"]["Enums"]["session_status"]
+        }
+        Relationships: []
+      }
+      player_answers: {
+        Row: {
+          answered_at: string
+          id: string
+          is_correct: boolean
+          player_id: string
+          question_id: string
+        }
+        Insert: {
+          answered_at?: string
+          id?: string
+          is_correct: boolean
+          player_id: string
+          question_id: string
+        }
+        Update: {
+          answered_at?: string
+          id?: string
+          is_correct?: boolean
+          player_id?: string
+          question_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "player_answers_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "session_players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      questions: {
+        Row: {
+          box_type: Database["public"]["Enums"]["box_type"]
+          correct_answer: number
+          created_at: string
+          id: string
+          image_url: string | null
+          options: Json
+          question_text: string
+        }
+        Insert: {
+          box_type: Database["public"]["Enums"]["box_type"]
+          correct_answer: number
+          created_at?: string
+          id: string
+          image_url?: string | null
+          options: Json
+          question_text: string
+        }
+        Update: {
+          box_type?: Database["public"]["Enums"]["box_type"]
+          correct_answer?: number
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          options?: Json
+          question_text?: string
+        }
+        Relationships: []
+      }
+      session_players: {
+        Row: {
+          assigned_box: Database["public"]["Enums"]["box_type"] | null
+          avatar_url: string
+          id: string
+          joined_at: string
+          pseudo: string
+          session_id: string
+        }
+        Insert: {
+          assigned_box?: Database["public"]["Enums"]["box_type"] | null
+          avatar_url: string
+          id?: string
+          joined_at?: string
+          pseudo: string
+          session_id: string
+        }
+        Update: {
+          assigned_box?: Database["public"]["Enums"]["box_type"] | null
+          avatar_url?: string
+          id?: string
+          joined_at?: string
+          pseudo?: string
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_players_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "game_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +185,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      box_type: "A" | "B" | "C" | "D"
+      session_status: "active" | "completed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +313,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      box_type: ["A", "B", "C", "D"],
+      session_status: ["active", "completed"],
+    },
   },
 } as const
