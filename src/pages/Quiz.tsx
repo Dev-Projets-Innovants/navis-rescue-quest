@@ -33,6 +33,17 @@ const Quiz = () => {
   const [attemptId, setAttemptId] = useState<string | null>(null);
   const [timeUp, setTimeUp] = useState(false);
 
+  // Get box data before any early returns
+  const box = session?.boxes.find(b => b.type === boxType);
+  const questionsCount = box && boxType && session ? getQuestionsForBox(boxType, session.players.length) : 0;
+  
+  // Shuffle questions once using useMemo (must be called before any conditional returns)
+  const shuffledQuestions = useMemo(() => {
+    if (!box || !box.questions) return [];
+    const questions = box.questions.slice(0, questionsCount);
+    return shuffleArray(questions);
+  }, [box?.questions, questionsCount]);
+
   useEffect(() => {
     if (loading) return;
     
@@ -76,18 +87,7 @@ const Quiz = () => {
     };
   }, [loading, session, boxType, navigate, attemptId, startAttempt]);
 
-  if (!session || !boxType) return null;
-
-  const box = session.boxes.find(b => b.type === boxType);
-  if (!box) return null;
-
-  const questionsCount = getQuestionsForBox(boxType, session.players.length);
-  
-  // Shuffle questions once using useMemo
-  const shuffledQuestions = useMemo(() => {
-    const questions = box.questions.slice(0, questionsCount);
-    return shuffleArray(questions);
-  }, [box.questions, questionsCount]);
+  if (!session || !boxType || !box || shuffledQuestions.length === 0) return null;
 
   const currentQuestion = shuffledQuestions[currentQuestionIndex];
 
