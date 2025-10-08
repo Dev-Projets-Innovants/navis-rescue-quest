@@ -1,73 +1,61 @@
-# Welcome to your Lovable project
+<div align="center">
 
-## Project info
+![Mission Navis Logo](./public/mission-navis-logo.jpg)
 
-**URL**: https://lovable.dev/projects/ef0af222-aafe-403d-a4d6-31119a277f20
+# Mission Navis - Escape Tech
 
-## How can I edit this code?
+### Jeu d'énigmes collaboratif en temps réel
 
-There are several ways of editing your application.
+[![EPSI](./public/logo-epsi.png)](https://www.epsi.fr/) &nbsp;&nbsp;&nbsp;&nbsp; [![WIS](./public/logo-wis.png)](https://www.wis-ecoles.com/)
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/ef0af222-aafe-403d-a4d6-31119a277f20) and start prompting.
+**WORKSHOP 4ème année EPSI/WIS**  
+**"ESCAPE TECH : CRÉE TON AVENTURE NUMÉRIQUE"**  
+📅 Du 06/10/2025 au 10/10/2025
 
-Changes made via Lovable will be committed automatically to this repo.
+</div>
 
-**Use your preferred IDE**
+## 🎯 À propos
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Mission Navis est un jeu d'énigmes collaboratif où les équipes doivent déverrouiller 4 boîtes mystérieuses en répondant correctement à des questions thématiques. Chaque boîte contient 5 questions, et un seul joueur peut travailler sur une boîte à la fois. Le temps est compté - les équipes doivent faire preuve de stratégie et de coordination pour terminer avant la fin du chronomètre.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Développé avec React, TypeScript, Tailwind CSS et Lovable Cloud, ce projet met en œuvre des concepts modernes de développement web avec gestion d'état en temps réel, système de session multi-joueurs et interface utilisateur responsive. Une documentation complète est disponible dans le dossier `/docs` pour comprendre l'architecture technique et les mécanismes du jeu.
 
-Follow these steps:
+## 🚀 Démarrage rapide
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+```bash
+# Cloner le projet
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Installer les dépendances
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Lancer en développement
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Le projet sera accessible sur `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📚 Documentation
 
-**Use GitHub Codespaces**
+Consultez la documentation complète dans le dossier [`/docs`](./docs/README.md) :
+- Architecture technique
+- Schéma de base de données
+- Flux de jeu détaillé
+- Guide d'installation
+- API et composants
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🛠️ Technologies
 
-## What technologies are used for this project?
+React • TypeScript • Tailwind CSS • Vite • Lovable Cloud
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+<div align="center">
 
-## How can I deploy this project?
+**Projet réalisé dans le cadre du Workshop EPSI/WIS 2025**
 
-Simply open [Lovable](https://lovable.dev/projects/ef0af222-aafe-403d-a4d6-31119a277f20) and click on Share -> Publish.
+[🌐 Lovable Project](https://lovable.dev/projects/ef0af222-aafe-403d-a4d6-31119a277f20)
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+</div>
