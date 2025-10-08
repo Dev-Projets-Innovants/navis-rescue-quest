@@ -1,12 +1,12 @@
-<div align="center">
+<div align="center" style="background-color: white; padding: 20px;">
 
-![Mission Navis Logo](./public/mission-navis-logo.jpg)
+<img src="./public/mission-navis-logo.jpg" alt="Mission Navis Logo" width="300"/>
 
 # Mission Navis - Escape Tech
 
 ### Jeu d'énigmes collaboratif en temps réel
 
-<img src="./public/logo-epsi.png" alt="EPSI" width="200"/> &nbsp;&nbsp;&nbsp;&nbsp; <img src="./public/logo-wis.png" alt="WIS" width="200"/>
+<img src="./public/logo-epsi.png" alt="EPSI" width="150"/> &nbsp;&nbsp;&nbsp;&nbsp; <img src="./public/logo-wis.png" alt="WIS" width="150"/>
 
 ---
 
