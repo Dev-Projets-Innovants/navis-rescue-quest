@@ -1,5 +1,46 @@
 import { Question, BoxType } from '@/types/game';
 
+import healthHypothermia from '@/assets/questions/health-hypothermia.jpg';
+import healthEmergency112 from '@/assets/questions/health-emergency-112.jpg';
+import healthRehydration from '@/assets/questions/health-rehydration.jpg';
+import healthFracture from '@/assets/questions/health-fracture.jpg';
+import healthMalaria from '@/assets/questions/health-malaria.jpg';
+import healthWater from '@/assets/questions/health-water.jpg';
+import healthJellyfish from '@/assets/questions/health-jellyfish.jpg';
+import healthPls from '@/assets/questions/health-pls.jpg';
+import healthSurvivalWater from '@/assets/questions/health-survival-water.jpg';
+import healthVitaminC from '@/assets/questions/health-vitamin-c.jpg';
+import tourismMale from '@/assets/questions/tourism-male.jpg';
+import tourismMadagascar from '@/assets/questions/tourism-madagascar.jpg';
+import tourismReunion from '@/assets/questions/tourism-reunion.jpg';
+import tourismPolynesia from '@/assets/questions/tourism-polynesia.jpg';
+import tourismJamaica from '@/assets/questions/tourism-jamaica.jpg';
+import tourismBali from '@/assets/questions/tourism-bali.jpg';
+import tourismEasterIsland from '@/assets/questions/tourism-easter-island.jpg';
+import tourismFreshwater from '@/assets/questions/tourism-freshwater.jpg';
+import tourismSuez from '@/assets/questions/tourism-suez.jpg';
+import tourismPolynesianCanoe from '@/assets/questions/tourism-polynesian-canoe.jpg';
+import artsDangerRed from '@/assets/questions/arts-danger-red.jpg';
+import artsSosMorse from '@/assets/questions/arts-sos-morse.jpg';
+import artsTriangleDanger from '@/assets/questions/arts-triangle-danger.jpg';
+import artsGauguin from '@/assets/questions/arts-gauguin.jpg';
+import artsBlueCalm from '@/assets/questions/arts-blue-calm.jpg';
+import artsIslandCrafts from '@/assets/questions/arts-island-crafts.jpg';
+import artsLouvre from '@/assets/questions/arts-louvre.jpg';
+import artsEncaustic from '@/assets/questions/arts-encaustic.jpg';
+import artsSignalFlags from '@/assets/questions/arts-signal-flags.jpg';
+import artsBiennale from '@/assets/questions/arts-biennale.jpg';
+import environmentCyclone from '@/assets/questions/environment-cyclone.jpg';
+import environmentMangrove from '@/assets/questions/environment-mangrove.jpg';
+import environmentCoralBleaching from '@/assets/questions/environment-coral-bleaching.jpg';
+import environmentRenewableEnergy from '@/assets/questions/environment-renewable-energy.jpg';
+import environmentSaltWater from '@/assets/questions/environment-salt-water.jpg';
+import environmentHealthyCoral from '@/assets/questions/environment-healthy-coral.jpg';
+import environmentTsunami from '@/assets/questions/environment-tsunami.jpg';
+import environmentDesalination from '@/assets/questions/environment-desalination.jpg';
+import environmentReefBiodiversity from '@/assets/questions/environment-reef-biodiversity.jpg';
+import environmentPermaculture from '@/assets/questions/environment-permaculture.jpg';
+
 export const questionsByBox: Record<BoxType, Question[]> = {
   A: [
     {
@@ -12,14 +53,16 @@ export const questionsByBox: Record<BoxType, Question[]> = {
         "Frictionner vigoureusement"
       ],
       correctAnswer: 1,
-      explanation: "En cas d'hypothermie, il faut protéger la personne du froid en l'enveloppant dans une couverture pour limiter les pertes de chaleur. L'eau chaude peut provoquer un choc thermique, l'alcool dilate les vaisseaux et aggrave la perte de chaleur, et les frictions peuvent être dangereuses."
+      explanation: "En cas d'hypothermie, il faut protéger la personne du froid en l'enveloppant dans une couverture pour limiter les pertes de chaleur. L'eau chaude peut provoquer un choc thermique, l'alcool dilate les vaisseaux et aggrave la perte de chaleur, et les frictions peuvent être dangereuses.",
+      image: healthHypothermia
     },
     {
       id: 'A2',
       question: "Quel est le numéro d'urgence universel en Europe ?",
       options: ["911", "112", "15", "18"],
       correctAnswer: 1,
-      explanation: "Le 112 est le numéro d'urgence universel utilisable dans tous les pays de l'Union européenne. Il permet de joindre les services de secours depuis n'importe quel téléphone, même sans crédit."
+      explanation: "Le 112 est le numéro d'urgence universel utilisable dans tous les pays de l'Union européenne. Il permet de joindre les services de secours depuis n'importe quel téléphone, même sans crédit.",
+      image: healthEmergency112
     },
     {
       id: 'A3',
@@ -31,7 +74,8 @@ export const questionsByBox: Record<BoxType, Question[]> = {
         "Donner du café ou du thé"
       ],
       correctAnswer: 1,
-      explanation: "En cas de déshydratation sévère, il faut réhydrater progressivement avec une solution de réhydratation orale (SRO) qui contient un équilibre de sels minéraux et de glucose. Boire trop vite peut causer des complications."
+      explanation: "En cas de déshydratation sévère, il faut réhydrater progressivement avec une solution de réhydratation orale (SRO) qui contient un équilibre de sels minéraux et de glucose. Boire trop vite peut causer des complications.",
+      image: healthRehydration
     },
     {
       id: 'A4',
@@ -43,21 +87,24 @@ export const questionsByBox: Record<BoxType, Question[]> = {
         "La zone est rouge"
       ],
       correctAnswer: 0,
-      explanation: "Une fracture ouverte se caractérise par la visibilité de l'os à travers la peau. C'est une urgence médicale car le risque d'infection est très élevé. Il ne faut jamais essayer de remettre l'os en place."
+      explanation: "Une fracture ouverte se caractérise par la visibilité de l'os à travers la peau. C'est une urgence médicale car le risque d'infection est très élevé. Il ne faut jamais essayer de remettre l'os en place.",
+      image: healthFracture
     },
     {
       id: 'A5',
       question: "Quelle maladie tropicale est transmise par les moustiques ?",
       options: ["Grippe", "Paludisme", "Choléra", "Tuberculose"],
       correctAnswer: 1,
-      explanation: "Le paludisme (ou malaria) est une maladie tropicale grave transmise par les moustiques anophèles. La prévention passe par l'utilisation de moustiquaires, de répulsifs et parfois de traitements prophylactiques."
+      explanation: "Le paludisme (ou malaria) est une maladie tropicale grave transmise par les moustiques anophèles. La prévention passe par l'utilisation de moustiquaires, de répulsifs et parfois de traitements prophylactiques.",
+      image: healthMalaria
     },
     {
       id: 'A6',
       question: "En situation de crise, combien de litres d'eau minimum par personne et par jour ?",
       options: ["1 litre", "2 litres", "3 litres", "5 litres"],
       correctAnswer: 2,
-      explanation: "En situation de crise, il faut prévoir au minimum 3 litres d'eau par personne et par jour : 2 litres pour boire et 1 litre pour l'hygiène et la préparation des aliments."
+      explanation: "En situation de crise, il faut prévoir au minimum 3 litres d'eau par personne et par jour : 2 litres pour boire et 1 litre pour l'hygiène et la préparation des aliments.",
+      image: healthWater
     },
     {
       id: 'A7',
@@ -69,7 +116,8 @@ export const questionsByBox: Record<BoxType, Question[]> = {
         "Frotter avec du sable"
       ],
       correctAnswer: 1,
-      explanation: "En cas de piqûre de méduse, il faut rincer la zone à l'eau de mer (pas d'eau douce qui active le venin). Ensuite, retirer délicatement les filaments avec une pince et consulter un médecin si nécessaire."
+      explanation: "En cas de piqûre de méduse, il faut rincer la zone à l'eau de mer (pas d'eau douce qui active le venin). Ensuite, retirer délicatement les filaments avec une pince et consulter un médecin si nécessaire.",
+      image: healthJellyfish
     },
     {
       id: 'A8',
@@ -81,21 +129,24 @@ export const questionsByBox: Record<BoxType, Question[]> = {
         "Placer la main sous la joue"
       ],
       correctAnswer: 2,
-      explanation: "Avant de mettre une personne en PLS, il faut d'abord vérifier qu'elle respire. La PLS est utilisée pour une personne inconsciente qui respire, afin d'éviter qu'elle s'étouffe avec sa langue ou des vomissements."
+      explanation: "Avant de mettre une personne en PLS, il faut d'abord vérifier qu'elle respire. La PLS est utilisée pour une personne inconsciente qui respire, afin d'éviter qu'elle s'étouffe avec sa langue ou des vomissements.",
+      image: healthPls
     },
     {
       id: 'A9',
       question: "Combien de temps peut-on survivre sans eau ?",
       options: ["1 jour", "3 jours", "7 jours", "14 jours"],
       correctAnswer: 1,
-      explanation: "En moyenne, un être humain peut survivre environ 3 jours sans eau dans des conditions normales. Ce délai peut être réduit en cas de forte chaleur ou d'effort physique intense."
+      explanation: "En moyenne, un être humain peut survivre environ 3 jours sans eau dans des conditions normales. Ce délai peut être réduit en cas de forte chaleur ou d'effort physique intense.",
+      image: healthSurvivalWater
     },
     {
       id: 'A10',
       question: "Quelle vitamine est essentielle pour éviter le scorbut ?",
       options: ["Vitamine A", "Vitamine C", "Vitamine D", "Vitamine K"],
       correctAnswer: 1,
-      explanation: "La vitamine C est essentielle pour éviter le scorbut, une maladie qui touchait autrefois les marins lors de longues traversées. On la trouve dans les agrumes, les kiwis, les poivrons et bien d'autres fruits et légumes frais."
+      explanation: "La vitamine C est essentielle pour éviter le scorbut, une maladie qui touchait autrefois les marins lors de longues traversées. On la trouve dans les agrumes, les kiwis, les poivrons et bien d'autres fruits et légumes frais.",
+      image: healthVitaminC
     }
   ],
   B: [
@@ -104,7 +155,8 @@ export const questionsByBox: Record<BoxType, Question[]> = {
       question: "Quelle est la capitale des Maldives ?",
       options: ["Malé", "Colombo", "Port-Louis", "Victoria"],
       correctAnswer: 0,
-      explanation: "Malé est la capitale et la plus grande ville des Maldives. C'est l'une des capitales les plus densément peuplées au monde et se trouve sur l'atoll de Malé Nord dans l'océan Indien."
+      explanation: "Malé est la capitale et la plus grande ville des Maldives. C'est l'une des capitales les plus densément peuplées au monde et se trouve sur l'atoll de Malé Nord dans l'océan Indien.",
+      image: tourismMale
     },
     {
       id: 'B2',

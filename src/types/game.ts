@@ -14,6 +14,7 @@ export interface Question {
   options: string[];
   correctAnswer: number;
   explanation?: string;
+  image?: string;
 }
 
 export interface PlayerWithBox extends Player {

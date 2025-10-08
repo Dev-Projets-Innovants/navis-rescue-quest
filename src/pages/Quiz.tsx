@@ -375,9 +375,16 @@ const Quiz = () => {
               </div>
 
               {currentQuestion.explanation && (
-                <div className="bg-primary/10 border-l-4 border-primary p-4 rounded">
-                  <p className="font-semibold mb-2">💡 Explication</p>
+                <div className="bg-primary/10 border-l-4 border-primary p-4 rounded space-y-3">
+                  <p className="font-semibold">💡 Explication</p>
                   <p className="text-sm">{currentQuestion.explanation}</p>
+                  {currentQuestion.image && (
+                    <img 
+                      src={currentQuestion.image} 
+                      alt="Illustration de la réponse" 
+                      className="w-full rounded-lg mt-3"
+                    />
+                  )}
                 </div>
               )}
 
