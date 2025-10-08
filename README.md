@@ -6,7 +6,7 @@
 
 ### Jeu d'énigmes collaboratif en temps réel
 
-[![EPSI](./public/logo-epsi.png)](https://tse2.mm.bing.net/th/id/OIP.RjVJ0tvP-j3EZ7-IK0ZVHAHaEy?rs=1&pid=ImgDetMain&o=7&rm=3) &nbsp;&nbsp;&nbsp;&nbsp; [![WIS](./public/logo-wis.png)](https://sarcdprodstrapi.blob.core.windows.net/strapi-media/assets/LOGO_WIS_2025_8240b8634d.png)
+[![EPSI](](https://tse2.mm.bing.net/th/id/OIP.RjVJ0tvP-j3EZ7-IK0ZVHAHaEy?rs=1&pid=ImgDetMain&o=7&rm=3) &nbsp;&nbsp;&nbsp;&nbsp; [![WIS]](https://sarcdprodstrapi.blob.core.windows.net/strapi-media/assets/LOGO_WIS_2025_8240b8634d.png)
 
 ---
 
