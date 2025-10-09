@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameSession } from '@/hooks/useGameSession';
-import { Timer } from '@/components/Timer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Lock, CheckCircle } from 'lucide-react';
@@ -45,14 +44,11 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background pb-6">
-      {/* Sticky header avec timer */}
+      {/* Sticky header avec code équipe */}
       <div className="sticky top-0 z-10 bg-primary text-primary-foreground shadow-lg">
-        <div className="max-w-4xl mx-auto p-4 flex justify-between items-center">
-          <Timer startTime={session.startTime} endTime={session.endTime} />
-          <div className="text-right">
-            <p className="text-xs sm:text-sm opacity-90">Code équipe</p>
-            <p className="font-bold text-sm sm:text-base">{session.code}</p>
-          </div>
+        <div className="max-w-4xl mx-auto p-4 text-center">
+          <p className="text-xs sm:text-sm opacity-90">Code équipe</p>
+          <p className="font-bold text-lg sm:text-xl">{session.code}</p>
         </div>
       </div>
 
