@@ -169,6 +169,12 @@ export const useGameSession = () => {
         // Only show "in-progress" if it's the current player's attempt
         const isCurrentPlayerAttempt = activeAttempt && activeAttempt.player_id === currentPlayerId;
         
+        // Find who occupies this box if someone else is playing
+        const occupiedByOther = activeAttempt && activeAttempt.player_id !== currentPlayerId;
+        const occupyingPlayer = occupiedByOther 
+          ? playersData?.find(p => p.id === activeAttempt.player_id)
+          : null;
+        
         const status = isUnlocked ? 'unlocked' as const : 
                       isCurrentPlayerAttempt ? 'in-progress' as const : 
                       'locked' as const;
@@ -186,7 +192,11 @@ export const useGameSession = () => {
             correctAnswer: q.correct_answer,
             explanation: q.explanation
           })) || [],
-          answers: []
+          answers: [],
+          occupiedBy: occupyingPlayer ? {
+            id: occupyingPlayer.id,
+            pseudo: occupyingPlayer.pseudo
+          } : undefined
         };
       });
 
@@ -269,6 +279,12 @@ export const useGameSession = () => {
         // Only show "in-progress" if it's the current player's attempt
         const isCurrentPlayerAttempt = activeAttempt && activeAttempt.player_id === currentPlayerId;
         
+        // Find who occupies this box if someone else is playing
+        const occupiedByOther = activeAttempt && activeAttempt.player_id !== currentPlayerId;
+        const occupyingPlayer = occupiedByOther 
+          ? playersData?.find(p => p.id === activeAttempt.player_id)
+          : null;
+        
         const status = isUnlocked ? 'unlocked' as const : 
                       isCurrentPlayerAttempt ? 'in-progress' as const : 
                       'locked' as const;
@@ -286,7 +302,11 @@ export const useGameSession = () => {
             correctAnswer: q.correct_answer,
             explanation: q.explanation
           })) || [],
-          answers: []
+          answers: [],
+          occupiedBy: occupyingPlayer ? {
+            id: occupyingPlayer.id,
+            pseudo: occupyingPlayer.pseudo
+          } : undefined
         };
       });
 

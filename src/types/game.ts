@@ -29,6 +29,7 @@ export interface Box {
   unlockCode: string;
   questions: Question[];
   answers: boolean[];
+  occupiedBy?: { id: string; pseudo: string };
 }
 
 export interface GameSession {

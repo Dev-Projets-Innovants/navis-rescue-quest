@@ -82,11 +82,21 @@ const Dashboard = () => {
                     </div>
                   )}
                 </div>
-                <div className="w-full sm:w-auto">
+                <div className="w-full sm:w-auto flex flex-col items-start sm:items-end gap-2">
+                  {box.occupiedBy && (
+                    <div className="bg-destructive/10 text-destructive px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                      <span className="w-2 h-2 bg-destructive rounded-full animate-pulse" />
+                      En cours par {box.occupiedBy.pseudo}
+                    </div>
+                  )}
                   {box.status === 'locked' && (
-                    <Button onClick={() => handleStartBox(box.type)} className="w-full sm:w-auto">
+                    <Button 
+                      onClick={() => handleStartBox(box.type)} 
+                      className="w-full sm:w-auto"
+                      disabled={!!box.occupiedBy}
+                    >
                       <Lock className="w-4 h-4 mr-2" />
-                      Commencer
+                      {box.occupiedBy ? 'Occupée' : 'Commencer'}
                     </Button>
                   )}
                   {box.status === 'in-progress' && (
