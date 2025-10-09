@@ -10,16 +10,16 @@ import healthBalancedMeal from '@/assets/questions/health-balanced-meal.jpg';
 import healthHydration from '@/assets/questions/health-hydration.jpg';
 import healthStress from '@/assets/questions/health-stress.jpg';
 import healthBackpack from '@/assets/questions/health-backpack.jpg';
-import tourismMale from '@/assets/questions/tourism-male.jpg';
-import tourismMadagascar from '@/assets/questions/tourism-madagascar.jpg';
-import tourismReunion from '@/assets/questions/tourism-reunion.jpg';
-import tourismPolynesia from '@/assets/questions/tourism-polynesia.jpg';
-import tourismJamaica from '@/assets/questions/tourism-jamaica.jpg';
-import tourismBali from '@/assets/questions/tourism-bali.jpg';
-import tourismEasterIsland from '@/assets/questions/tourism-easter-island.jpg';
-import tourismFreshwater from '@/assets/questions/tourism-freshwater.jpg';
-import tourismSuez from '@/assets/questions/tourism-suez.jpg';
-import tourismPolynesianCanoe from '@/assets/questions/tourism-polynesian-canoe.jpg';
+import tourismSocialMedia from '@/assets/questions/tourism-social-media.png';
+import tourismReligiousSite from '@/assets/questions/tourism-religious-site.png';
+import tourismTipping from '@/assets/questions/tourism-tipping.png';
+import tourismMarket from '@/assets/questions/tourism-market.png';
+import tourismSeasons from '@/assets/questions/tourism-seasons.png';
+import tourismResponsibleTravel from '@/assets/questions/tourism-responsible-travel.png';
+import tourismDocuments from '@/assets/questions/tourism-documents.png';
+import tourismIdRequired from '@/assets/questions/tourism-id-required.png';
+import tourismLocalLanguage from '@/assets/questions/tourism-local-language.png';
+import tourismDrinkingWater from '@/assets/questions/tourism-drinking-water.png';
 import artsDangerRed from '@/assets/questions/arts-danger-red.jpg';
 import artsSosMorse from '@/assets/questions/arts-sos-morse.jpg';
 import artsTriangleDanger from '@/assets/questions/arts-triangle-danger.jpg';
@@ -177,83 +177,83 @@ export const questionsByBox: Record<BoxType, Question[]> = {
   B: [
     {
       id: 'B1',
-      question: "Quelle est la capitale des Maldives ?",
-      options: ["Malé", "Colombo", "Port-Louis", "Victoria"],
-      correctAnswer: 0,
-      explanation: "Malé est la capitale et la plus grande ville des Maldives. C'est l'une des capitales les plus densément peuplées au monde et se trouve sur l'atoll de Malé Nord dans l'océan Indien.",
-      image: tourismMale
+      question: "Avant de poster la photo d'une personne locale sur Insta, le mieux est…",
+      options: ["Poster sans demander", "Demander la permission", "Mettre un filtre", "C'est toujours interdit"],
+      correctAnswer: 1,
+      explanation: "Respect de la vie privée et des coutumes locales. Demander la permission est une marque de respect envers les personnes photographiées et leurs cultures.",
+      image: tourismSocialMedia
     },
     {
       id: 'B2',
-      question: "Dans quel océan se trouve Madagascar ?",
-      options: ["Océan Atlantique", "Océan Pacifique", "Océan Indien", "Océan Arctique"],
+      question: "Dans un lieu religieux, on fait surtout…",
+      options: ["Tenue très courte", "Parler fort", "Tenue correcte, suivre les règles (chapeau, épaules, silence)", "Filmer pendant l'office"],
       correctAnswer: 2,
-      explanation: "Madagascar est située dans l'océan Indien, au large de la côte est de l'Afrique. C'est la quatrième plus grande île du monde et possède une biodiversité unique avec de nombreuses espèces endémiques.",
-      image: tourismMadagascar
+      explanation: "Les codes vestimentaires et le calme témoignent de respect. Chaque lieu de culte a ses propres règles qu'il est important de respecter.",
+      image: tourismReligiousSite
     },
     {
       id: 'B3',
-      question: "Quelle île est surnommée 'l'île de la Réunion' ?",
-      options: ["Maurice", "Mayotte", "La Réunion", "Seychelles"],
-      correctAnswer: 2,
-      explanation: "La Réunion est un département français d'outre-mer situé dans l'océan Indien. Elle est célèbre pour son volcan actif, le Piton de la Fournaise, et ses paysages spectaculaires.",
-      image: tourismReunion
+      question: "Les pourboires : USA vs France ?",
+      options: ["Identiques", "Aux USA souvent attendus ; en France, service souvent inclus", "Jamais de pourboire aux USA", "Interdit en France"],
+      correctAnswer: 1,
+      explanation: "Le modèle salarial diffère ; on s'adapte au pays. Aux USA, le pourboire représente une part importante du salaire des serveurs, alors qu'en France le service est généralement inclus dans l'addition.",
+      image: tourismTipping
     },
     {
       id: 'B4',
-      question: "Quel archipel appartient à la France dans le Pacifique ?",
-      options: ["Hawaii", "Polynésie française", "Fidji", "Samoa"],
+      question: "Dans un souk/bazar, la négociation…",
+      options: ["Se fait en criant", "Est courante, polie et souriante", "Est interdite", "Se fait en insultant le prix"],
       correctAnswer: 1,
-      explanation: "La Polynésie française est une collectivité d'outre-mer française dans le Pacifique Sud. Elle comprend 118 îles dispersées, dont les célèbres Tahiti, Bora-Bora et Moorea.",
-      image: tourismPolynesia
+      explanation: "Marchander fait partie de la culture, avec respect. La négociation est un échange social et doit rester courtoise et amicale.",
+      image: tourismMarket
     },
     {
       id: 'B5',
-      question: "Quelle est la langue officielle de la Jamaïque ?",
-      options: ["Espagnol", "Français", "Anglais", "Créole"],
-      correctAnswer: 2,
-      explanation: "L'anglais est la langue officielle de la Jamaïque depuis la colonisation britannique. Le patois jamaïcain est également largement parlé comme langue vernaculaire.",
-      image: tourismJamaica
+      question: "Haute saison vs basse saison, pour un voyageur ?",
+      options: ["Haute = moins cher", "Basse = plus calme/prix plus bas mais offre réduite", "Aucune différence", "Basse = météo toujours meilleure"],
+      correctAnswer: 1,
+      explanation: "Moins de monde mais parfois horaires/activités limités. La basse saison offre des avantages économiques mais peut impliquer des services réduits.",
+      image: tourismSeasons
     },
     {
       id: 'B6',
-      question: "Sur quel continent se trouve l'île de Bali ?",
-      options: ["Afrique", "Asie", "Océanie", "Amérique du Sud"],
+      question: "Geste simple de voyage responsable :",
+      options: ["Jeter ses déchets sur place", "Acheter local, utiliser gourde/réutilisable, bus/train quand possible", "Nourrir les animaux sauvages", "Cueillir des plantes protégées"],
       correctAnswer: 1,
-      explanation: "Bali est une île indonésienne située en Asie du Sud-Est. Elle est réputée pour ses rizières en terrasses, ses temples hindous et ses plages paradisiaques.",
-      image: tourismBali
+      explanation: "Ça réduit l'empreinte et soutient l'économie locale. Le tourisme responsable minimise l'impact environnemental et maximise les bénéfices pour les communautés locales.",
+      image: tourismResponsibleTravel
     },
     {
       id: 'B7',
-      question: "Quelle île est connue pour ses statues Moaï ?",
-      options: ["Tahiti", "Île de Pâques", "Bora-Bora", "Moorea"],
+      question: "Sécurité des documents en voyage :",
+      options: ["Donner son passeport à un inconnu", "Garder des copies (papier + numérique) séparées de l'original", "Montrer tout son cash en public", "Suivre un inconnu \"guide\""],
       correctAnswer: 1,
-      explanation: "L'île de Pâques (Rapa Nui) est célèbre pour ses gigantesques statues de pierre appelées moaï. Ces sculptures monumentales, créées par le peuple Rapa Nui entre 1250 et 1500, représentent des ancêtres divinisés.",
-      image: tourismEasterIsland
+      explanation: "En cas de perte/vol, les copies facilitent les démarches. Conserver des copies séparées permet de prouver son identité et d'accélérer les procédures consulaires.",
+      image: tourismDocuments
     },
     {
       id: 'B8',
-      question: "Quelle ressource naturelle est abondante dans les îles tropicales ?",
-      options: ["Pétrole", "Eau douce", "Charbon", "Gaz naturel"],
+      question: "Quel document faut-il toujours avoir en déplacement ?",
+      options: ["Aucun", "Une pièce d'identité valide (CNI/passeport selon le pays)", "Carte de bibliothèque", "Carte de sport"],
       correctAnswer: 1,
-      explanation: "Les îles tropicales bénéficient généralement de précipitations abondantes, ce qui leur procure des ressources en eau douce importantes. Cette eau est essentielle pour la survie et le développement des communautés insulaires.",
-      image: tourismFreshwater
+      explanation: "Les contrôles d'identité et l'embarquement l'exigent souvent. Une pièce d'identité valide est obligatoire pour voyager et peut être demandée à tout moment.",
+      image: tourismIdRequired
     },
     {
       id: 'B9',
-      question: "Quelle route maritime relie l'Europe à l'Asie via Suez ?",
-      options: ["Route du Cap", "Route de la Soie maritime", "Route du Nord", "Route Atlantique"],
-      correctAnswer: 1,
-      explanation: "La Route de la Soie maritime moderne passe par le canal de Suez, reliant l'Europe à l'Asie. C'est l'une des routes commerciales les plus importantes au monde, évitant le contournement de l'Afrique par le cap de Bonne-Espérance.",
-      image: tourismSuez
+      question: "Apprendre quelques mots de la langue locale (\"bonjour\", \"merci\") sert à…",
+      options: ["Rien", "Gêner les gens", "Montrer du respect et faciliter l'échange", "Éviter de payer"],
+      correctAnswer: 2,
+      explanation: "Ça crée du lien et aide même pour demander de l'aide. Faire l'effort de parler quelques mots dans la langue locale est toujours apprécié et ouvre les portes.",
+      image: tourismLocalLanguage
     },
     {
       id: 'B10',
-      question: "Quel peuple insulaire est connu pour la navigation en pirogue double ?",
-      options: ["Vikings", "Polynésiens", "Grecs", "Phéniciens"],
+      question: "Si on n'est pas sûr que l'eau du robinet est potable :",
+      options: ["On boit quand même", "On vérifie l'info locale et on privilégie eau scellée ; attention aux glaçons", "On ajoute du citron et c'est bon", "On remplit sa gourde n'importe où"],
       correctAnswer: 1,
-      explanation: "Les Polynésiens sont des navigateurs exceptionnels qui ont colonisé les îles du Pacifique grâce à leurs pirogues doubles (va'a). Ils utilisaient les étoiles, les vagues et les oiseaux pour naviguer sur de longues distances.",
-      image: tourismPolynesianCanoe
+      explanation: "Mieux vaut éviter les risques digestifs en voyage. L'eau non potable peut causer de graves problèmes de santé, il faut toujours vérifier sa qualité avant de la consommer.",
+      image: tourismDrinkingWater
     }
   ],
   C: [
