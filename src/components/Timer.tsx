@@ -74,7 +74,7 @@ export const Timer = ({ startTime, endTime, duration, onTimeUp }: TimerProps) =>
 
   return (
     <div className={`flex items-center gap-2 text-2xl font-bold ${
-      timeData.isLowTime ? 'text-destructive animate-pulse' : 'text-primary-foreground'
+      timeData.isLowTime ? 'text-destructive animate-pulse' : 'text-black'
     }`}>
       <Clock className="w-6 h-6" />
       <span>{timeData.text}</span>
