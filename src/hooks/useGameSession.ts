@@ -147,11 +147,18 @@ export const useGameSession = () => {
         .eq('session_id', sessionData.id)
         .is('ended_at', null);
 
+      // Get current player ID for status checking
+      const currentPlayerId = localStorage.getItem('current_player_id');
+
       const boxes = (['A', 'B', 'C', 'D'] as BoxType[]).map(type => {
         const isUnlocked = unlocksData?.some(u => u.box_type === type && u.code_validated);
         const activeAttempt = attemptsData?.find(a => a.box_type === type);
+        
+        // Only show "in-progress" if it's the current player's attempt
+        const isCurrentPlayerAttempt = activeAttempt && activeAttempt.player_id === currentPlayerId;
+        
         const status = isUnlocked ? 'unlocked' as const : 
-                      activeAttempt ? 'in-progress' as const : 
+                      isCurrentPlayerAttempt ? 'in-progress' as const : 
                       'locked' as const;
         
         return {
@@ -240,11 +247,18 @@ export const useGameSession = () => {
         .eq('session_id', sessionData.id)
         .is('ended_at', null);
 
+      // Get current player ID for status checking
+      const currentPlayerId = localStorage.getItem('current_player_id');
+
       const boxes = (['A', 'B', 'C', 'D'] as BoxType[]).map(type => {
         const isUnlocked = unlocksData?.some(u => u.box_type === type && u.code_validated);
         const activeAttempt = attemptsData?.find(a => a.box_type === type);
+        
+        // Only show "in-progress" if it's the current player's attempt
+        const isCurrentPlayerAttempt = activeAttempt && activeAttempt.player_id === currentPlayerId;
+        
         const status = isUnlocked ? 'unlocked' as const : 
-                      activeAttempt ? 'in-progress' as const : 
+                      isCurrentPlayerAttempt ? 'in-progress' as const : 
                       'locked' as const;
         
         return {
