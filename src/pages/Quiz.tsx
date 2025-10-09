@@ -180,10 +180,6 @@ const Quiz = () => {
     };
   }, [loading, session, boxType, navigate, attemptId, startAttempt, getActiveAttempt, progressLoaded]);
 
-  if (!session || !boxType || !box || shuffledQuestions.length === 0) return null;
-
-  const currentQuestion = shuffledQuestions[currentQuestionIndex];
-
   const handleTimeUp = useCallback(async () => {
     setTimeUp(true);
     toast.error('Temps écoulé ! La boîte reste verrouillée.');
@@ -199,6 +195,10 @@ const Quiz = () => {
       navigate('/dashboard');
     }, 3000);
   }, [answers, shuffledQuestions.length, attemptId, endAttempt, navigate]);
+
+  if (!session || !boxType || !box || shuffledQuestions.length === 0) return null;
+
+  const currentQuestion = shuffledQuestions[currentQuestionIndex];
 
   const handleAnswerSelect = (index: number) => {
     if (showExplanation || timeUp) return;
