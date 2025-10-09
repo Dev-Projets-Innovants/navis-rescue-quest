@@ -20,16 +20,16 @@ import tourismDocuments from '@/assets/questions/tourism-documents.png';
 import tourismIdRequired from '@/assets/questions/tourism-id-required.png';
 import tourismLocalLanguage from '@/assets/questions/tourism-local-language.png';
 import tourismDrinkingWater from '@/assets/questions/tourism-drinking-water.png';
-import artsDangerRed from '@/assets/questions/arts-danger-red.jpg';
-import artsSosMorse from '@/assets/questions/arts-sos-morse.jpg';
-import artsTriangleDanger from '@/assets/questions/arts-triangle-danger.jpg';
-import artsGauguin from '@/assets/questions/arts-gauguin.jpg';
-import artsBlueCalm from '@/assets/questions/arts-blue-calm.jpg';
-import artsIslandCrafts from '@/assets/questions/arts-island-crafts.jpg';
-import artsLouvre from '@/assets/questions/arts-louvre.jpg';
-import artsEncaustic from '@/assets/questions/arts-encaustic.jpg';
-import artsSignalFlags from '@/assets/questions/arts-signal-flags.jpg';
-import artsBiennale from '@/assets/questions/arts-biennale.jpg';
+import artsNewYork from '@/assets/questions/arts-new-york.png';
+import artsLouvre from '@/assets/questions/arts-louvre.png';
+import artsBasel from '@/assets/questions/arts-basel.png';
+import artsDuchamp from '@/assets/questions/arts-duchamp.png';
+import artsMauritshuis from '@/assets/questions/arts-mauritshuis.png';
+import artsImpressionism from '@/assets/questions/arts-impressionism.png';
+import artsBiennaleVenezia from '@/assets/questions/arts-biennale-venezia.png';
+import artsBanksy from '@/assets/questions/arts-banksy.png';
+import artsQuaiBranly from '@/assets/questions/arts-quai-branly.png';
+import artsPointillism from '@/assets/questions/arts-pointillism.png';
 import environmentCyclone from '@/assets/questions/environment-cyclone.jpg';
 import environmentMangrove from '@/assets/questions/environment-mangrove.jpg';
 import environmentCoralBleaching from '@/assets/questions/environment-coral-bleaching.jpg';
@@ -259,83 +259,133 @@ export const questionsByBox: Record<BoxType, Question[]> = {
   C: [
     {
       id: 'C1',
-      question: "Quelle couleur est universellement associée au danger ?",
-      options: ["Bleu", "Vert", "Rouge", "Jaune"],
-      correctAnswer: 2,
-      explanation: "Le rouge est universellement associé au danger et à l'alerte. On le retrouve dans les panneaux de signalisation, les feux de circulation et les signaux d'urgence dans le monde entier.",
-      image: artsDangerRed
+      question: "Quelle ville est considérée comme la capitale mondiale de l'art contemporain ?",
+      options: [
+        "Paris",
+        "New York",
+        "Londres",
+        "Berlin"
+      ],
+      correctAnswer: 1,
+      explanation: "New York est le centre mondial de l'art contemporain depuis les années 1950, grâce à son foisonnement artistique (SoHo, Chelsea, Brooklyn) et à ses institutions comme le MoMA, le Guggenheim ou le Whitney Museum. C'est aussi là que se tiennent les ventes les plus importantes (Christie's, Sotheby's).",
+      image: artsNewYork
     },
     {
       id: 'C2',
-      question: "Quel signal SOS est utilisé en morse ?",
-      options: ["... --- ...", "--- ... ---", "... ... ...", "--- --- ---"],
+      question: "Quelle est la plus grande galerie d'art du monde ?",
+      options: [
+        "Le Louvre",
+        "Le Prado",
+        "Le British Museum",
+        "Le MET"
+      ],
       correctAnswer: 0,
-      explanation: "Le signal SOS en morse est '... --- ...' (trois points, trois traits, trois points). C'est le signal de détresse international, facile à reconnaître et à transmettre même dans des conditions difficiles.",
-      image: artsSosMorse
-    },
-    {
-      id: 'C3',
-      question: "Quelle forme géométrique indique un panneau de danger ?",
-      options: ["Carré", "Triangle", "Cercle", "Hexagone"],
-      correctAnswer: 1,
-      explanation: "Les panneaux de danger sont triangulaires avec un bord rouge. Cette forme géométrique distinctive permet une identification rapide même à distance ou en cas de mauvaise visibilité.",
-      image: artsTriangleDanger
-    },
-    {
-      id: 'C4',
-      question: "Quel artiste est célèbre pour ses peintures de Tahiti ?",
-      options: ["Van Gogh", "Paul Gauguin", "Monet", "Picasso"],
-      correctAnswer: 1,
-      explanation: "Paul Gauguin a passé les dernières années de sa vie en Polynésie française, où il a créé certaines de ses œuvres les plus célèbres. Ses peintures de Tahiti capturent la vie insulaire et les couleurs vibrantes des tropiques.",
-      image: artsGauguin
-    },
-    {
-      id: 'C5',
-      question: "Quelle couleur symbolise l'eau et le calme ?",
-      options: ["Rouge", "Vert", "Bleu", "Orange"],
-      correctAnswer: 2,
-      explanation: "Le bleu est universellement associé à l'eau, au ciel et au calme. Cette couleur a un effet apaisant et est souvent utilisée dans les environnements nécessitant de la sérénité.",
-      image: artsBlueCalm
-    },
-    {
-      id: 'C6',
-      question: "Quel type d'art utilise des coquillages et coraux ?",
-      options: ["Sculpture minérale", "Art insulaire", "Peinture abstraite", "Art digital"],
-      correctAnswer: 1,
-      explanation: "L'art insulaire des îles tropicales utilise souvent des matériaux locaux comme les coquillages, les coraux, les perles et les bois précieux pour créer des objets décoratifs et rituels.",
-      image: artsIslandCrafts
-    },
-    {
-      id: 'C7',
-      question: "Quel musée parisien abrite la Joconde ?",
-      options: ["Musée d'Orsay", "Le Louvre", "Centre Pompidou", "Musée Rodin"],
-      correctAnswer: 1,
-      explanation: "Le Louvre à Paris abrite la Joconde (Mona Lisa) de Léonard de Vinci, l'une des peintures les plus célèbres au monde. C'est le musée le plus visité au monde.",
+      explanation: "Le musée du Louvre à Paris est le plus vaste du monde, avec environ 73 000 m² d'exposition et plus de 35 000 œuvres présentées, dont La Joconde, La Vénus de Milo ou La Victoire de Samothrace.",
       image: artsLouvre
     },
     {
-      id: 'C8',
-      question: "Quelle technique artistique utilise le feu et la cire ?",
-      options: ["Aquarelle", "Encaustique", "Fusain", "Pastel"],
+      id: 'C3',
+      question: "Quelle foire internationale d'art contemporain se tient chaque année à Bâle ?",
+      options: [
+        "FIAC",
+        "Art Basel",
+        "Art Dubai",
+        "Frieze London"
+      ],
       correctAnswer: 1,
-      explanation: "L'encaustique est une technique de peinture ancienne qui utilise de la cire d'abeille chauffée mélangée à des pigments. La chaleur permet de fusionner les couleurs et crée des effets de texture uniques.",
-      image: artsEncaustic
+      explanation: "Art Basel est la plus prestigieuse foire d'art contemporain au monde. Créée en 1970, elle rassemble chaque année des centaines de galeries et artistes internationaux. Elle a aussi des éditions à Miami et Hong Kong.",
+      image: artsBasel
+    },
+    {
+      id: 'C4',
+      question: "Quel artiste est célèbre pour ses \"ready-made\" comme \"Fontaine\" ?",
+      options: [
+        "Pablo Picasso",
+        "Marcel Duchamp",
+        "Salvador Dalí",
+        "Andy Warhol"
+      ],
+      correctAnswer: 1,
+      explanation: "Duchamp a révolutionné l'art avec ses ready-made : objets du quotidien transformés en œuvres d'art. Fontaine (un urinoir renversé signé \"R. Mutt\", 1917) interroge la définition même de l'art.",
+      image: artsDuchamp
+    },
+    {
+      id: 'C5',
+      question: "Dans quel musée se trouve \"La Jeune Fille à la perle\" de Vermeer ?",
+      options: [
+        "Rijksmuseum",
+        "Mauritshuis – La Haye",
+        "Musée du Louvre",
+        "National Gallery"
+      ],
+      correctAnswer: 1,
+      explanation: "Ce tableau emblématique du XVIIe siècle est conservé au Mauritshuis, à La Haye (Pays-Bas). On le surnomme souvent \"la Joconde du Nord\" pour son mystère et sa douceur.",
+      image: artsMauritshuis
+    },
+    {
+      id: 'C6',
+      question: "Quel courant artistique privilégie la lumière et les impressions fugitives ?",
+      options: [
+        "Cubisme",
+        "Impressionnisme",
+        "Réalisme",
+        "Surréalisme"
+      ],
+      correctAnswer: 1,
+      explanation: "Les impressionnistes (Monet, Renoir, Degas…) peignaient en plein air pour capter les effets changeants de la lumière et du temps, comme dans Impression, soleil levant (1872).",
+      image: artsImpressionism
+    },
+    {
+      id: 'C7',
+      question: "Quelle institution organise la Biennale d'Art de Venise ?",
+      options: [
+        "Fondation Cartier",
+        "Fondation Prada",
+        "La Biennale di Venezia",
+        "UNESCO"
+      ],
+      correctAnswer: 2,
+      explanation: "La Biennale di Venezia est une fondation italienne qui organise la fameuse Biennale d'art contemporain depuis 1895, un des plus grands événements artistiques internationaux.",
+      image: artsBiennaleVenezia
+    },
+    {
+      id: 'C8',
+      question: "Quel artiste est connu pour ses œuvres de rue et son identité secrète ?",
+      options: [
+        "Shepard Fairey",
+        "JR",
+        "Banksy",
+        "Keith Haring"
+      ],
+      correctAnswer: 2,
+      explanation: "Banksy est un street artist britannique anonyme, célèbre pour ses pochoirs engagés (Girl with Balloon, Flower Thrower). Ses œuvres apparaissent sans annonce dans l'espace public.",
+      image: artsBanksy
     },
     {
       id: 'C9',
-      question: "Combien de drapeaux de signalisation maritime existent (approximativement) ?",
-      options: ["10", "26", "40", "50"],
-      correctAnswer: 2,
-      explanation: "Il existe environ 40 drapeaux de signalisation maritime dans le Code international des signaux. Chaque drapeau a une signification spécifique et peut transmettre des messages importants entre navires.",
-      image: artsSignalFlags
+      question: "Quel musée parisien est consacré aux arts primitifs ?",
+      options: [
+        "Musée Rodin",
+        "Musée du Quai Branly – Jacques Chirac",
+        "Petit Palais",
+        "Palais de Tokyo"
+      ],
+      correctAnswer: 1,
+      explanation: "Le Musée du Quai Branly rassemble des collections d'Afrique, d'Océanie, d'Asie et des Amériques, mettant en valeur les civilisations non occidentales.",
+      image: artsQuaiBranly
     },
     {
       id: 'C10',
-      question: "Quelle exposition d'art contemporain est réputée à Venise ?",
-      options: ["Documenta", "Biennale", "Frieze", "Art Basel"],
-      correctAnswer: 1,
-      explanation: "La Biennale de Venise est l'une des plus importantes expositions d'art contemporain au monde. Fondée en 1895, elle se tient tous les deux ans dans la cité des Doges et attire des millions de visiteurs.",
-      image: artsBiennale
+      question: "Quelle technique artistique utilise des petits points de couleur juxtaposés ?",
+      options: [
+        "Pointillisme",
+        "Fauvisme",
+        "Symbolisme",
+        "Expressionnisme"
+      ],
+      correctAnswer: 0,
+      explanation: "Le pointillisme, développé par Seurat et Signac, repose sur la juxtaposition de points de couleur pure. L'œil du spectateur recompose le mélange optique (ex : Un dimanche après-midi à la Grande Jatte).",
+      image: artsPointillism
     }
   ],
   D: [
