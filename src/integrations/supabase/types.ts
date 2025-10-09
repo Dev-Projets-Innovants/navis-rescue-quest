@@ -1,3 +1,7 @@
+// création automatique du type Database à partir du schéma de la base de données
+// Ce shéma est automatiquement généré par Supabase lors de la création des tables après chaque migration de la base de données
+// IMPORTANT: To re-generate, run `npx supabase gen types typescript --project-id your-project-id > ./src/integrations/supabase/types.ts`
+
 export type Json =
   | string
   | number
@@ -7,8 +11,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "13.0.5"
   }
