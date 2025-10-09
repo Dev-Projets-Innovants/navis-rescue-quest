@@ -5,6 +5,10 @@ import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;
 
+// Cache pour éviter les toasts dupliqués
+const toastCache = new Map<string, number>();
+const TOAST_CACHE_DURATION = 3000; // 3 secondes
+
 type ToasterToast = ToastProps & {
   id: string;
   title?: React.ReactNode;
@@ -135,6 +139,30 @@ function dispatch(action: Action) {
 type Toast = Omit<ToasterToast, "id">;
 
 function toast({ ...props }: Toast) {
+  // Créer une clé unique basée sur le titre et la description
+  const cacheKey = `${props.title || ''}-${props.description || ''}`;
+  
+  // Vérifier si ce toast a déjà été affiché récemment
+  const now = Date.now();
+  const lastShown = toastCache.get(cacheKey);
+  
+  if (lastShown && now - lastShown < TOAST_CACHE_DURATION) {
+    // Ce toast a déjà été affiché récemment, on l'ignore
+    return {
+      id: '',
+      dismiss: () => {},
+      update: () => {},
+    };
+  }
+  
+  // Enregistrer ce toast dans le cache
+  toastCache.set(cacheKey, now);
+  
+  // Nettoyer le cache après la durée définie
+  setTimeout(() => {
+    toastCache.delete(cacheKey);
+  }, TOAST_CACHE_DURATION);
+  
   const id = genId();
 
   const update = (props: ToasterToast) =>

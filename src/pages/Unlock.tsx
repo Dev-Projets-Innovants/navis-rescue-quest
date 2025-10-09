@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { useGameSession } from '@/hooks/useGameSession';
 import { BoxType } from '@/types/game';
 import { Copy, CheckCircle, PartyPopper, Ship, MapPin } from 'lucide-react';
-import { toast } from 'sonner';
+import { toast } from '@/lib/toastUtils';
 import missionNavisLogo from '@/assets/mission-navis-logo.jpg';
 
 const Unlock = () => {

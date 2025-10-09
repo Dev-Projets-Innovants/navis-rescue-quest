@@ -8,7 +8,7 @@ import { useGameSession } from '@/hooks/useGameSession';
 import { supabase } from '@/integrations/supabase/client';
 import { BoxType } from '@/types/game';
 import { CheckCircle, Lock, AlertCircle } from 'lucide-react';
-import { toast } from 'sonner';
+import { toast } from '@/lib/toastUtils';
 
 // Page de validation des codes de déverrouillage
 

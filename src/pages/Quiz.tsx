@@ -10,7 +10,7 @@ import { useBoxAttempts } from '@/hooks/useBoxAttempts';
 import { getQuestionsForBox } from '@/lib/gameStorage';
 import { shuffleArray } from '@/lib/utils';
 import { BoxType } from '@/types/game';
-import { toast } from 'sonner';
+import { toast } from '@/lib/toastUtils';
 import { supabase } from '@/integrations/supabase/client';
 import {
   Dialog,

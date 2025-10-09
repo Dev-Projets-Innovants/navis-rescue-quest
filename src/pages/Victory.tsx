@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useGameSession } from '@/hooks/useGameSession';
 import { Share2, RotateCcw, Trophy, Ship, Clock, Users, Target, Handshake, Zap, MessageCircle, BarChart3 } from 'lucide-react';
-import { toast } from 'sonner';
+import { toast } from '@/lib/toastUtils';
 
 const Victory = () => {
   const navigate = useNavigate();
