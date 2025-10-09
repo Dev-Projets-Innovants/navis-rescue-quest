@@ -105,6 +105,18 @@ export const useGameSession = () => {
 
       if (sessionError) throw sessionError;
 
+      // Check player count limit (max 4 players)
+      const { data: existingPlayers, error: countError } = await supabase
+        .from('session_players')
+        .select('id')
+        .eq('session_id', sessionData.id);
+
+      if (countError) throw countError;
+
+      if (existingPlayers && existingPlayers.length >= 4) {
+        throw new Error('Cette session a atteint le nombre maximum de joueurs (4)');
+      }
+
       // Create player
       const { data: playerData, error: playerError } = await supabase
         .from('session_players')
