@@ -1,15 +1,15 @@
 import { Question, BoxType } from '@/types/game';
 
-import healthHypothermia from '@/assets/questions/health-hypothermia.jpg';
-import healthEmergency112 from '@/assets/questions/health-emergency-112.jpg';
-import healthRehydration from '@/assets/questions/health-rehydration.jpg';
-import healthFracture from '@/assets/questions/health-fracture.jpg';
-import healthMalaria from '@/assets/questions/health-malaria.jpg';
-import healthWater from '@/assets/questions/health-water.jpg';
-import healthJellyfish from '@/assets/questions/health-jellyfish.jpg';
-import healthPls from '@/assets/questions/health-pls.jpg';
-import healthSurvivalWater from '@/assets/questions/health-survival-water.jpg';
-import healthVitaminC from '@/assets/questions/health-vitamin-c.jpg';
+import healthSleep from '@/assets/questions/health-sleep.jpg';
+import healthEnergyDrink from '@/assets/questions/health-energy-drink.jpg';
+import healthVape from '@/assets/questions/health-vape.jpg';
+import healthAntibiotics from '@/assets/questions/health-antibiotics.jpg';
+import healthWarmup from '@/assets/questions/health-warmup.jpg';
+import healthSunscreen from '@/assets/questions/health-sunscreen.jpg';
+import healthBalancedMeal from '@/assets/questions/health-balanced-meal.jpg';
+import healthHydration from '@/assets/questions/health-hydration.jpg';
+import healthStress from '@/assets/questions/health-stress.jpg';
+import healthBackpack from '@/assets/questions/health-backpack.jpg';
 import tourismMale from '@/assets/questions/tourism-male.jpg';
 import tourismMadagascar from '@/assets/questions/tourism-madagascar.jpg';
 import tourismReunion from '@/assets/questions/tourism-reunion.jpg';
@@ -45,108 +45,133 @@ export const questionsByBox: Record<BoxType, Question[]> = {
   A: [
     {
       id: 'A1',
-      question: "En cas d'hypothermie, quelle est la première action à réaliser ?",
+      question: "Combien d'heures de sommeil un ado devrait-il viser en semaine ?",
       options: [
-        "Mettre la personne sous l'eau chaude",
-        "Envelopper dans une couverture",
-        "Donner de l'alcool à boire",
-        "Frictionner vigoureusement"
+        "5–6 h",
+        "6–7 h",
+        "8–10 h",
+        "11–13 h"
       ],
-      correctAnswer: 1,
-      explanation: "En cas d'hypothermie, il faut protéger la personne du froid en l'enveloppant dans une couverture pour limiter les pertes de chaleur. L'eau chaude peut provoquer un choc thermique, l'alcool dilate les vaisseaux et aggrave la perte de chaleur, et les frictions peuvent être dangereuses.",
-      image: healthHypothermia
+      correctAnswer: 2,
+      explanation: "8–10 h aident la mémoire, l'humeur et les performances scolaires/sportives. Un sommeil suffisant est essentiel pour la croissance, la concentration et le bien-être général des adolescents.",
+      image: healthSleep
     },
     {
       id: 'A2',
-      question: "Quel est le numéro d'urgence universel en Europe ?",
-      options: ["911", "112", "15", "18"],
+      question: "Boire une boisson énergisante juste avant le sport, c'est…",
+      options: [
+        "Parfait pour s'hydrater",
+        "Risqué (cœur qui s'emballe, déshydratation)",
+        "Indispensable pour l'endurance",
+        "Un bon substitut à l'eau"
+      ],
       correctAnswer: 1,
-      explanation: "Le 112 est le numéro d'urgence universel utilisable dans tous les pays de l'Union européenne. Il permet de joindre les services de secours depuis n'importe quel téléphone, même sans crédit.",
-      image: healthEmergency112
+      explanation: "Caféine/sucre peuvent accélérer le cœur et ne remplacent pas l'hydratation. Les boissons énergisantes peuvent causer des palpitations, de l'anxiété et augmenter la déshydratation pendant l'effort.",
+      image: healthEnergyDrink
     },
     {
       id: 'A3',
-      question: "En cas de déshydratation sévère, que faut-il faire en priorité ?",
+      question: "La 'vape' (cigarette électronique), c'est…",
       options: [
-        "Donner de l'eau froide rapidement",
-        "Réhydrater progressivement avec une solution orale",
-        "Attendre que la personne ait soif",
-        "Donner du café ou du thé"
+        "Sans danger",
+        "Pas sans risque (dépendance, irritation)",
+        "Un traitement de l'asthme",
+        "Interdite partout"
       ],
       correctAnswer: 1,
-      explanation: "En cas de déshydratation sévère, il faut réhydrater progressivement avec une solution de réhydratation orale (SRO) qui contient un équilibre de sels minéraux et de glucose. Boire trop vite peut causer des complications.",
-      image: healthRehydration
+      explanation: "Elle peut créer une dépendance et irriter les voies respiratoires. La vape contient de la nicotine et d'autres substances chimiques dont les effets à long terme sont encore étudiés.",
+      image: healthVape
     },
     {
       id: 'A4',
-      question: "Comment identifier une fracture ouverte ?",
+      question: "Antibiotiques et rhume/grippe (virus), on fait quoi ?",
       options: [
-        "L'os est visible à travers la peau",
-        "La douleur est très intense",
-        "Il y a un gonflement",
-        "La zone est rouge"
+        "On en prend toujours",
+        "On n'en prend pas (inefficaces sur les virus)",
+        "Oui si fièvre > 38 °C",
+        "Un seul comprimé suffit"
       ],
-      correctAnswer: 0,
-      explanation: "Une fracture ouverte se caractérise par la visibilité de l'os à travers la peau. C'est une urgence médicale car le risque d'infection est très élevé. Il ne faut jamais essayer de remettre l'os en place.",
-      image: healthFracture
+      correctAnswer: 1,
+      explanation: "Les antibiotiques agissent sur les bactéries, pas sur les virus. Prendre des antibiotiques inutilement contribue à créer des résistances bactériennes, un problème de santé publique majeur.",
+      image: healthAntibiotics
     },
     {
       id: 'A5',
-      question: "Quelle maladie tropicale est transmise par les moustiques ?",
-      options: ["Grippe", "Paludisme", "Choléra", "Tuberculose"],
+      question: "À quoi sert l'échauffement avant un match ?",
+      options: [
+        "À rien",
+        "À réduire les blessures et préparer muscles/articulations",
+        "À te fatiguer",
+        "À remplacer l'entraînement"
+      ],
       correctAnswer: 1,
-      explanation: "Le paludisme (ou malaria) est une maladie tropicale grave transmise par les moustiques anophèles. La prévention passe par l'utilisation de moustiquaires, de répulsifs et parfois de traitements prophylactiques.",
-      image: healthMalaria
+      explanation: "Il augmente la température musculaire et la mobilité. L'échauffement améliore la performance sportive, prévient les blessures et prépare le système cardiovasculaire à l'effort.",
+      image: healthWarmup
     },
     {
       id: 'A6',
-      question: "En situation de crise, combien de litres d'eau minimum par personne et par jour ?",
-      options: ["1 litre", "2 litres", "3 litres", "5 litres"],
-      correctAnswer: 2,
-      explanation: "En situation de crise, il faut prévoir au minimum 3 litres d'eau par personne et par jour : 2 litres pour boire et 1 litre pour l'hygiène et la préparation des aliments.",
-      image: healthWater
+      question: "SPF 50, ça veut dire quoi ?",
+      options: [
+        "Protection toute la journée",
+        "Filtre plus d'UVB qu'un SPF 15",
+        "Anti-moustiques",
+        "Empêche de bronzer"
+      ],
+      correctAnswer: 1,
+      explanation: "Plus le SPF est élevé, plus il bloque les UVB (mais il faut en remettre). Un SPF 50 bloque environ 98% des UVB. Il est important de réappliquer la crème toutes les 2 heures et après la baignade.",
+      image: healthSunscreen
     },
     {
       id: 'A7',
-      question: "Que faire en cas de piqûre de méduse ?",
+      question: "Au self, un repas 'équilibré' ressemble plutôt à…",
       options: [
-        "Rincer à l'eau douce",
-        "Rincer à l'eau de mer",
-        "Appliquer de la glace directement",
-        "Frotter avec du sable"
+        "Frites + soda + dessert",
+        "½ assiette légumes + ¼ protéines + ¼ féculents + eau",
+        "Sauter le repas",
+        "2 barres énergétiques"
       ],
       correctAnswer: 1,
-      explanation: "En cas de piqûre de méduse, il faut rincer la zone à l'eau de mer (pas d'eau douce qui active le venin). Ensuite, retirer délicatement les filaments avec une pince et consulter un médecin si nécessaire.",
-      image: healthJellyfish
+      explanation: "On vise fibres + protéines + féculent pour l'énergie et la satiété. Un repas équilibré apporte tous les nutriments essentiels et aide à maintenir la concentration et l'énergie tout au long de la journée.",
+      image: healthBalancedMeal
     },
     {
       id: 'A8',
-      question: "Quel est le premier geste de la position latérale de sécurité (PLS) ?",
+      question: "S'hydrater quand on fait du sport, c'est…",
       options: [
-        "Basculer la tête en arrière",
-        "Plier le bras de la victime",
-        "Vérifier la respiration",
-        "Placer la main sous la joue"
+        "Uniquement quand on meurt de soif",
+        "Avant/pendant/après en petites gorgées",
+        "Inutile s'il fait froid",
+        "Avec des boissons très sucrées"
       ],
-      correctAnswer: 2,
-      explanation: "Avant de mettre une personne en PLS, il faut d'abord vérifier qu'elle respire. La PLS est utilisée pour une personne inconsciente qui respire, afin d'éviter qu'elle s'étouffe avec sa langue ou des vomissements.",
-      image: healthPls
+      correctAnswer: 1,
+      explanation: "Boire régulièrement évite crampes, maux de tête et baisse de perf. L'hydratation est cruciale pour maintenir la température corporelle, la circulation sanguine et les performances physiques.",
+      image: healthHydration
     },
     {
       id: 'A9',
-      question: "Combien de temps peut-on survivre sans eau ?",
-      options: ["1 jour", "3 jours", "7 jours", "14 jours"],
+      question: "Gros stress/angoisse qui dure : réaction la plus saine ?",
+      options: [
+        "Garder pour soi",
+        "En parler (proche, prof, infirmier·e, pro) et demander de l'aide",
+        "Ignorer",
+        "Alcool pour 'déstresser'"
+      ],
       correctAnswer: 1,
-      explanation: "En moyenne, un être humain peut survivre environ 3 jours sans eau dans des conditions normales. Ce délai peut être réduit en cas de forte chaleur ou d'effort physique intense.",
-      image: healthSurvivalWater
+      explanation: "En parler tôt aide à trouver des solutions et à se protéger. Le stress prolongé peut avoir des impacts sérieux sur la santé mentale et physique. Demander de l'aide est un signe de courage, pas de faiblesse.",
+      image: healthStress
     },
     {
       id: 'A10',
-      question: "Quelle vitamine est essentielle pour éviter le scorbut ?",
-      options: ["Vitamine A", "Vitamine C", "Vitamine D", "Vitamine K"],
-      correctAnswer: 1,
-      explanation: "La vitamine C est essentielle pour éviter le scorbut, une maladie qui touchait autrefois les marins lors de longues traversées. On la trouve dans les agrumes, les kiwis, les poivrons et bien d'autres fruits et légumes frais.",
-      image: healthVitaminC
+      question: "Poids raisonnable d'un sac à dos de cours ?",
+      options: [
+        "30 % du poids du corps",
+        "20–25 %",
+        "10–15 % et porter avec deux bretelles",
+        "Aucun risque, peu importe"
+      ],
+      correctAnswer: 2,
+      explanation: "Au-delà, le risque de douleurs dos/épaules augmente. Un sac trop lourd peut causer des problèmes de posture, des douleurs chroniques et affecter la croissance chez les jeunes.",
+      image: healthBackpack
     }
   ],
   B: [
