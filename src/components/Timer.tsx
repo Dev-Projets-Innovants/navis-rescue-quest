@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Clock } from 'lucide-react';
 
 interface TimerProps {
@@ -10,10 +10,25 @@ interface TimerProps {
 
 export const Timer = ({ startTime, endTime, duration, onTimeUp }: TimerProps) => {
   const [elapsed, setElapsed] = useState(0);
+  const onTimeUpRef = useRef(onTimeUp);
+  
+  // Keep onTimeUp ref updated
+  useEffect(() => {
+    onTimeUpRef.current = onTimeUp;
+  }, [onTimeUp]);
 
   useEffect(() => {
     if (endTime) {
       setElapsed(endTime - startTime);
+      return;
+    }
+
+    // Check immediately if time is already up
+    const initialElapsed = Date.now() - startTime;
+    setElapsed(initialElapsed);
+    
+    if (duration && initialElapsed >= duration * 1000) {
+      if (onTimeUpRef.current) onTimeUpRef.current();
       return;
     }
 
@@ -24,12 +39,12 @@ export const Timer = ({ startTime, endTime, duration, onTimeUp }: TimerProps) =>
       // Countdown mode: check if time is up
       if (duration && currentElapsed >= duration * 1000) {
         clearInterval(interval);
-        if (onTimeUp) onTimeUp();
+        if (onTimeUpRef.current) onTimeUpRef.current();
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [startTime, endTime, duration, onTimeUp]);
+  }, [startTime, endTime, duration]);
 
   const formatTime = (ms: number) => {
     const totalSeconds = Math.floor(ms / 1000);

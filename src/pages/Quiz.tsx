@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -184,7 +184,7 @@ const Quiz = () => {
 
   const currentQuestion = shuffledQuestions[currentQuestionIndex];
 
-  const handleTimeUp = async () => {
+  const handleTimeUp = useCallback(async () => {
     setTimeUp(true);
     toast.error('Temps écoulé ! La boîte reste verrouillée.');
     
@@ -198,7 +198,7 @@ const Quiz = () => {
     setTimeout(() => {
       navigate('/dashboard');
     }, 3000);
-  };
+  }, [answers, shuffledQuestions.length, attemptId, endAttempt, navigate]);
 
   const handleAnswerSelect = (index: number) => {
     if (showExplanation || timeUp) return;
