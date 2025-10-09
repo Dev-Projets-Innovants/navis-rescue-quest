@@ -34,12 +34,14 @@ graph TB
 ## 🎨 Stack technique détaillé
 
 ### Frontend Framework
+
 - **React 18.3.1** - Bibliothèque UI avec hooks
 - **TypeScript** - Typage statique pour la sécurité
 - **Vite** - Build tool ultra-rapide
 - **React Router v6** - Routing côté client
 
 ### Styling et UI
+
 - **Tailwind CSS** - Utility-first CSS
 - **Shadcn/ui** - Composants accessibles et personnalisables
 - **Radix UI** - Primitives UI headless
@@ -47,11 +49,13 @@ graph TB
 - **class-variance-authority** - Gestion des variants CSS
 
 ### Backend et Base de données
+
 - **Lovable Cloud (Supabase)** - Backend as a Service
 - **PostgreSQL** - Base de données relationnelle
 - **Row Level Security (RLS)** - Sécurité au niveau des lignes
 
 ### Gestion d'état
+
 - **React Hooks** (useState, useEffect, etc.)
 - **LocalStorage** - Persistance locale
 - **Custom Hooks** - Logique métier réutilisable
