@@ -482,24 +482,24 @@ export const boxInfo: Record<BoxType, { name: string; subtitle: string; icon: st
     name: 'Santé & Premiers Secours',
     subtitle: 'Connaissances médicales d\'urgence',
     icon: '🏥',
-    unlockCode: 'SANTE-2947'
+    unlockCode: 'SANTE-147'
   },
   B: {
     name: 'Tourisme & Culture',
     subtitle: 'Géographie de survie',
     icon: '🌍',
-    unlockCode: 'TOUR-8163'
+    unlockCode: 'TOUR-682'
   },
   C: {
     name: 'Arts Créatifs',
     subtitle: 'Communication visuelle d\'urgence',
     icon: '🎨',
-    unlockCode: 'ART-5029'
+    unlockCode: 'ART-359'
   },
   D: {
     name: 'Environnement',
     subtitle: 'Écosystème et ressources',
     icon: '🌱',
-    unlockCode: 'ENV-7241'
+    unlockCode: 'ENV-921'
   }
 };
